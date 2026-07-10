@@ -8,36 +8,31 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <style>
   :root{
-    --bg:#0d1117;          /* 最外层背景 */
-    --card:#161b22;        /* 卡片背景 */
-    --border:#30363d;      /* 边框 */
-    --text:#c9d1d9;        /* 主文本 */
-    --muted:#8b949e;       /* 次要文本 */
-    --primary:#ffffff;     /* 主色纯白 */
-    --hover:#f0f6fc;       /* 悬停亮白 */
-    --code-bg:#1c2128;     /* 代码块背景 */
-    
-    /* 提示框配色适配深色 */
+    --bg:#0d1117;
+    --card:#161b22;
+    --border:#30363d;
+    --text:#c9d1d9;
+    --muted:#8b949e;
+    --primary:#ffffff;
+    --hover:#f0f6fc;
+    --code-bg:#1c2128;
     --tip-bg:#161b22;      --tip-border:#8b949e;
-    --warn-bg:#1c1208;     --warn-border:#d29922; /* 黄色警告 */
-    --danger-bg:#27131a;   --danger-border:#f85149; /* 红色危险 */
+    --warn-bg:#1c1208;     --warn-border:#d29922;
+    --danger-bg:#27131a;   --danger-border:#f85149;
   }
   *{box-sizing:border-box;}
   body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;}
   a{color:var(--primary);text-decoration:none;font-weight:600;}
   a:hover{text-decoration:underline;color:var(--hover);}
 
-  /* 顶部 Header */
   header{background:#010409;color:#fff;padding:28px 24px;box-shadow:0 1px 4px rgba(0,0,0,.5);border-bottom:1px solid var(--border);}
   header .wrap{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
   header .logo{font-size:24px;font-weight:700;letter-spacing:.5px;display:flex;align-items:center;gap:8px;}
   header .sub{font-size:13px;opacity:.8;margin-top:4px;}
   header .meta{margin-left:auto;font-size:12px;opacity:.8;text-align:right;}
 
-  /* 主体布局 */
   .layout{max-width:1180px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:240px 1fr;gap:24px;}
 
-  /* 侧边目录 */
   nav.toc{position:sticky;top:16px;align-self:start;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:16px 14px;max-height:calc(100vh - 32px);overflow:auto;}
   nav.toc::-webkit-scrollbar{width:6px;}
   nav.toc::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
@@ -48,8 +43,8 @@
   nav.toc a:hover{background:#21262d;text-decoration:none;}
   nav.toc a.active{background:#30363d;color:#fff;}
   nav.toc .grp{font-size:11px;color:var(--muted);padding:10px 10px 4px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;}
+  nav.toc .divider{height:1px;background:var(--border);margin:10px 4px;}
 
-  /* 内容区 */
   main{min-width:0;}
   .breadcrumb{font-size:13px;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
   .breadcrumb span{color:var(--text);font-weight:600;}
@@ -63,7 +58,6 @@
   section .desc{color:var(--muted);font-size:13px;margin:12px 0 16px;}
   section h3{font-size:16px;margin:20px 0 8px;font-weight:600;color:#fff;}
 
-  /* 指令表格 */
   table.cmd{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0 10px;}
   table.cmd th,table.cmd td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top;}
   table.cmd th{background:#21262d;font-weight:600;color:#fff;}
@@ -72,7 +66,6 @@
 
   code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;background:var(--code-bg);padding:2px 6px;border-radius:3px;font-size:13px;color:#79c0ff;font-weight:600;}
 
-  /* 提示框 */
   .note{border-radius:4px;padding:12px 16px;margin:12px 0;font-size:13.5px;border-left:4px solid;display:flex;gap:10px;align-items:flex-start;}
   .note i{font-size:18px;margin-top:1px;}
   .note.tip{background:var(--tip-bg);border-color:var(--tip-border);color:var(--text);}
@@ -84,12 +77,20 @@
   .steps li{position:relative;padding:8px 8px 8px 38px;margin:6px 0;background:#0d1117;border-radius:4px;border:1px solid var(--border);}
   .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:8px;top:8px;width:22px;height:22px;background:#fff;color:#000;border-radius:50%;text-align:center;line-height:22px;font-size:12px;font-weight:700;}
 
+  /* 服规编号列表 */
+  .rules{counter-reset:r;list-style:none;padding:0;margin:8px 0;}
+  .rules li{position:relative;padding:14px 14px 14px 52px;margin:10px 0;background:#0d1117;border:1px solid var(--border);border-radius:6px;}
+  .rules li::before{counter-increment:r;content:counter(r);position:absolute;left:12px;top:14px;width:28px;height:28px;background:#21262d;border:1px solid var(--border);color:#fff;border-radius:6px;text-align:center;line-height:28px;font-size:14px;font-weight:700;}
+  .rules li .title{font-weight:600;color:#fff;display:block;margin-bottom:4px;}
+  .rules li p{margin:0;font-size:14px;color:var(--text);}
+  .rules li.important{border-color:var(--warn-border);background:#1c1208;}
+  .rules li.important::before{background:var(--warn-border);color:#000;}
+
   .external-link{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid #fff;border-radius:4px;background:var(--card);font-size:14px;color:#fff;font-weight:600;}
   .external-link:hover{background:#fff;color:#000;text-decoration:none;}
 
   footer{text-align:center;color:var(--muted);font-size:12px;padding:24px 16px;border-top:1px solid var(--border);margin-top:8px;}
 
-  /* 响应式 */
   @media (max-width:860px){
     .layout{grid-template-columns:1fr;}
     nav.toc{position:static;max-height:none;}
@@ -103,11 +104,11 @@
   <div class="wrap">
     <div>
       <div class="logo"><i class="bi bi-box-seam-fill"></i> Wtcraft Wiki</div>
-      <div class="sub">玩家插件使用教程 · 玩家自助查阅</div>
+      <div class="sub">玩家插件使用教程 · 服规 · 玩家自助查阅</div>
     </div>
     <div class="meta">
       维护：WTC 管理组<br>
-      文档版本：v1.2 · 2026-07-10
+      文档版本：v1.3 · 2026-07-10
     </div>
   </div>
 </header>
@@ -116,6 +117,12 @@
   <!-- 侧边目录 -->
   <nav class="toc" id="toc">
     <h3><i class="bi bi-list-nested"></i> 导航</h3>
+    <div class="grp">服务规则</div>
+    <ul>
+      <li><a href="#rules"><i class="bi bi-card-text"></i> 服务器规则</a></li>
+      <li><a href="#friend-server"><i class="bi bi-people"></i> 友服推荐</a></li>
+    </ul>
+    <div class="divider"></div>
     <div class="grp">账号与安全</div>
     <ul>
       <li><a href="#login"><i class="bi bi-shield-lock"></i> 登录 / 注册</a></li>
@@ -154,8 +161,88 @@
   <!-- 主内容 -->
   <main>
     <div class="breadcrumb"><i class="bi bi-house"></i> 首页 <span>/</span> 玩家教程 <span>/</span> 插件使用</div>
-    <h1 class="title">Wtcraft 服务器玩家插件使用教程</h1>
-    <p class="lead">本页汇总了服务器全部玩家可用插件的核心指令与使用说明，按功能模块分类整理。如仍有疑问，可在玩家群内询问，我们会持续完善本教程。</p>
+    <h1 class="title">Wtcraft 服务器玩家使用文档</h1>
+    <p class="lead">本页包含服务器规则、插件使用教程等内容，按模块分类整理。如仍有疑问，可在玩家群内询问，我们会持续完善本教程。</p>
+
+    <!-- ============ 服规 ============ -->
+    <section id="rules">
+      <h2><i class="bi bi-card-text"></i> 服务器规则 <span class="badge">必读</span></h2>
+      <p class="desc">本服为长期发展的纯生存养老社区服，支持轻度生电，注重社区氛围与原版生存体验。</p>
+      <p>欢迎来到 Wtcraft！进入服务器即视为同意以下全部规则，违反规则将视情节给予警告、禁言、封禁等处罚。</p>
+
+      <div class="note tip"><i class="bi bi-link-45deg"></i><div><strong>Wtcraft Wiki：</strong><a href="https://shirokoabds.github.io/wtcwiki" target="_blank">https://shirokoabds.github.io/wtcwiki</a></div></div>
+
+      <ol class="rules">
+        <li>
+          <span class="title">账号安全与责任</span>
+          <p>严禁盗号、骗号或利用他人账号违规操作。账号安全由持有人自负，所有操作视为持有人所为，违规将连带封禁关联账号。</p>
+        </li>
+        <li>
+          <span class="title">文明交流与内容合规</span>
+          <p>游戏内外（含群聊）禁止辱骂、人身攻击、引战、挂人、刷屏骚扰，也禁止发布违法不良信息、宣传其他服务器或商业广告。违者警告、禁言，严重者封禁或踢群。</p>
+        </li>
+        <li>
+          <span class="title">财产与建筑保护</span>
+          <p>严禁偷窃、恶意破坏、私自修改他人建筑、物资及驯养生物。私人借物纠纷管理不予受理，请自行确认风险。公共设施同样受保护，破坏者将按情节处罚。</p>
+        </li>
+        <li class="important">
+          <span class="title">领地保护期限（重要）</span>
+          <p>所有重要建筑请务必使用圈地插件进行保护。自 <strong>2026 年 7 月 15 日</strong> 起，未圈领地的建筑若遭破坏，管理员将不再受理调查及补偿申请，请务必在此之前完成圈地。</p>
+        </li>
+        <li>
+          <span class="title">生电与红石限制</span>
+          <p>允许小型红石机械和常规农场，但禁止高频脉冲、长期高负载装置及任何明显影响服务器 TPS 的设施。管理员有权直接拆除违规机器，恶意卡服将从重处罚。</p>
+        </li>
+        <li>
+          <span class="title">刷怪、挂机与小号管理</span>
+          <p>仅允许单人小型刷怪塔，禁止集群高频刷怪装置。允许少量辅助小号，但禁止全自动挂机、公共区域挂机、多号切号等加重服务器负荷的行为。违规设备将被清理，主号连带处罚。</p>
+        </li>
+        <li>
+          <span class="title">严禁外挂与作弊</span>
+          <p>禁止使用任何第三方辅助工具（透视、飞行、脚本等）及利用 BUG 牟利。违者没收违规所得，并视情节封禁。举报有奖，恶意举报将反罚。</p>
+        </li>
+        <li>
+          <span class="title">PVP 与骚扰行为</span>
+          <p>PVP 仅限指定区域，非 PVP 区禁止恶意攻击、陷阱杀害，禁止针对新玩家（装备差距过大视为恶意），禁止引怪围堵、卡位干扰他人。造成损失须全额赔付。</p>
+        </li>
+        <li>
+          <span class="title">物资与交易限制</span>
+          <p>普通鞘翅单人限持 2 个，仅可赠与不可交易，违规多持将递增处罚。其他物品交易请自行协商，管理不介入私人借贷纠纷。</p>
+        </li>
+        <li>
+          <span class="title">环境与建筑规范</span>
+          <p>禁止在出生点、新手区建造妨碍通行的设施。废弃工程请及时清理，避免浮空方块和杂乱建筑影响整体美观。违规建筑可直接拆除。</p>
+        </li>
+        <li>
+          <span class="title">执法与申诉</span>
+          <p>严禁阻挠管理员执法，违者加重处罚。对处罚有异议请私下向管理申诉，禁止在公共频道或群内当众扰乱秩序。</p>
+        </li>
+        <li>
+          <span class="title">损失补偿受理条件</span>
+          <p>因原版机制或自身失误导致的损失不予补偿。被偷窃或破坏需提供完整、无剪辑的证据链（含时间戳的截图或录屏）方可申请处理。</p>
+        </li>
+        <li>
+          <span class="title">最终解释权</span>
+          <p>管理团队保留本规则的最终解释权，对于未列明的违规行为，管理组有权根据实际情况酌情处理。违反规则将视情节给予警告、禁言、封禁等处罚，未尽事宜由管理组处理。</p>
+        </li>
+      </ol>
+
+      <div class="note tip"><i class="bi bi-heart"></i><div>愿大家共同建设一个友好、稳定、长久发展的 Wtcraft 社区。</div></div>
+    </section>
+
+    <!-- ============ 友服 ============ -->
+    <section id="friend-server">
+      <h2><i class="bi bi-people"></i> 友服推荐 <span class="badge">其他</span></h2>
+      <p class="desc">大家可以去友服游玩！友服信息如下。</p>
+      <table class="cmd">
+        <thead><tr><th width="34%">项目</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">友服名称</td><td>详见群内公告图片</td></tr>
+          <tr><td class="cmd">友服 Q 群</td><td><strong>1095646855</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>友服与本服为独立运营的社区，相关规则与玩法以友服自身公告为准。</div></div>
+    </section>
 
     <!-- ============ 登录 ============ -->
     <section id="login">
@@ -402,6 +489,9 @@
 
       <h3>Q5：领地怎么圈？</h3>
       <p>A：详见 <a href="https://dominion.lunadeer.cn/notes/doc/player/" target="_blank">Dominion 官方玩家文档</a>。</p>
+
+      <h3>Q6：领地保护期限是什么意思？</h3>
+      <p>A：自 2026 年 7 月 15 日起，未圈领地的建筑若遭破坏，管理员将不再受理调查及补偿申请，请务必在此之前完成圈地。</p>
     </section>
 
   </main>
