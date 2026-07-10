@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wtcraft 服务器 · 玩家插件使用教程 Wiki</title>
+<!-- 引入 Bootstrap Icons 图标库 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<style>
+  :root{
+    --bg:#0d1117;          /* 最外层背景 */
+    --card:#161b22;        /* 卡片背景 */
+    --border:#30363d;      /* 边框 */
+    --text:#c9d1d9;        /* 主文本 */
+    --muted:#8b949e;       /* 次要文本 */
+    --primary:#ffffff;     /* 主色纯白 */
+    --hover:#f0f6fc;       /* 悬停亮白 */
+    --code-bg:#1c2128;     /* 代码块背景 */
+    
+    /* 提示框配色适配深色 */
+    --tip-bg:#161b22;      --tip-border:#8b949e;
+    --warn-bg:#1c1208;     --warn-border:#d29922; /* 黄色警告 */
+    --danger-bg:#27131a;   --danger-border:#f85149; /* 红色危险 */
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;}
+  a{color:var(--primary);text-decoration:none;font-weight:600;}
+  a:hover{text-decoration:underline;color:var(--hover);}
+
+  /* 顶部 Header */
+  header{background:#010409;color:#fff;padding:28px 24px;box-shadow:0 1px 4px rgba(0,0,0,.5);border-bottom:1px solid var(--border);}
+  header .wrap{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  header .logo{font-size:24px;font-weight:700;letter-spacing:.5px;display:flex;align-items:center;gap:8px;}
+  header .sub{font-size:13px;opacity:.8;margin-top:4px;}
+  header .meta{margin-left:auto;font-size:12px;opacity:.8;text-align:right;}
+
+  /* 主体布局 */
+  .layout{max-width:1180px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:240px 1fr;gap:24px;}
+
+  /* 侧边目录 */
+  nav.toc{position:sticky;top:16px;align-self:start;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:16px 14px;max-height:calc(100vh - 32px);overflow:auto;}
+  nav.toc::-webkit-scrollbar{width:6px;}
+  nav.toc::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  nav.toc h3{margin:0 0 10px;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:6px;}
+  nav.toc ul{list-style:none;margin:0;padding:0;}
+  nav.toc li{margin:2px 0;}
+  nav.toc a{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:4px;font-size:14px;color:var(--text);font-weight:400;}
+  nav.toc a:hover{background:#21262d;text-decoration:none;}
+  nav.toc a.active{background:#30363d;color:#fff;}
+  nav.toc .grp{font-size:11px;color:var(--muted);padding:10px 10px 4px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;}
+
+  /* 内容区 */
+  main{min-width:0;}
+  .breadcrumb{font-size:13px;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+  .breadcrumb span{color:var(--text);font-weight:600;}
+  h1.title{font-size:28px;margin:0 0 6px;font-weight:700;color:#fff;}
+  .lead{color:var(--muted);margin:0 0 18px;font-size:14px;}
+
+  section{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:22px 26px;margin-bottom:20px;scroll-margin-top:16px;}
+  section h2{margin:0 0 4px;font-size:20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);padding-bottom:12px;color:#fff;}
+  section h2 i{font-size:22px;}
+  section h2 .badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;background:#21262d;color:var(--text);text-transform:uppercase;}
+  section .desc{color:var(--muted);font-size:13px;margin:12px 0 16px;}
+  section h3{font-size:16px;margin:20px 0 8px;font-weight:600;color:#fff;}
+
+  /* 指令表格 */
+  table.cmd{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0 10px;}
+  table.cmd th,table.cmd td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top;}
+  table.cmd th{background:#21262d;font-weight:600;color:#fff;}
+  table.cmd td.cmd{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-size:13px;white-space:nowrap;color:#79c0ff;background:#0d1117;}
+  table.cmd tr:hover td{background:#1c2128;}
+
+  code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;background:var(--code-bg);padding:2px 6px;border-radius:3px;font-size:13px;color:#79c0ff;font-weight:600;}
+
+  /* 提示框 */
+  .note{border-radius:4px;padding:12px 16px;margin:12px 0;font-size:13.5px;border-left:4px solid;display:flex;gap:10px;align-items:flex-start;}
+  .note i{font-size:18px;margin-top:1px;}
+  .note.tip{background:var(--tip-bg);border-color:var(--tip-border);color:var(--text);}
+  .note.warn{background:var(--warn-bg);border-color:var(--warn-border);color:#e3b341;}
+  .note.danger{background:var(--danger-bg);border-color:var(--danger-border);color:#ff7b72;}
+  .note strong{display:inline-block;font-weight:700;}
+
+  .steps{counter-reset:s;list-style:none;padding:0;margin:8px 0;}
+  .steps li{position:relative;padding:8px 8px 8px 38px;margin:6px 0;background:#0d1117;border-radius:4px;border:1px solid var(--border);}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:8px;top:8px;width:22px;height:22px;background:#fff;color:#000;border-radius:50%;text-align:center;line-height:22px;font-size:12px;font-weight:700;}
+
+  .external-link{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid #fff;border-radius:4px;background:var(--card);font-size:14px;color:#fff;font-weight:600;}
+  .external-link:hover{background:#fff;color:#000;text-decoration:none;}
+
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:24px 16px;border-top:1px solid var(--border);margin-top:8px;}
+
+  /* 响应式 */
+  @media (max-width:860px){
+    .layout{grid-template-columns:1fr;}
+    nav.toc{position:static;max-height:none;}
+    header .meta{margin:0;text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div>
+      <div class="logo"><i class="bi bi-box-seam-fill"></i> Wtcraft Wiki</div>
+      <div class="sub">玩家插件使用教程 · 玩家自助查阅</div>
+    </div>
+    <div class="meta">
+      维护：WTC 管理组<br>
+      文档版本：v1.2 · 2026-07-10
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- 侧边目录 -->
+  <nav class="toc" id="toc">
+    <h3><i class="bi bi-list-nested"></i> 导航</h3>
+    <div class="grp">账号与安全</div>
+    <ul>
+      <li><a href="#login"><i class="bi bi-shield-lock"></i> 登录 / 注册</a></li>
+      <li><a href="#skin"><i class="bi bi-palette"></i> 皮肤设置</a></li>
+      <li><a href="#report"><i class="bi bi-flag"></i> 举报玩家</a></li>
+    </ul>
+    <div class="grp">领地与保护</div>
+    <ul>
+      <li><a href="#dominion"><i class="bi bi-shield-check"></i> 领地 Dominion</a></li>
+      <li><a href="#blocklocker"><i class="bi bi-lock"></i> 箱子锁 BlockLocker</a></li>
+    </ul>
+    <div class="grp">经济与交易</div>
+    <ul>
+      <li><a href="#economy"><i class="bi bi-cash-coin"></i> 经济系统</a></li>
+    </ul>
+    <div class="grp">传送与坐标</div>
+    <ul>
+      <li><a href="#teleport"><i class="bi bi-geo-alt"></i> 玩家传送</a></li>
+      <li><a href="#warp"><i class="bi bi-pin-map"></i> 传送点</a></li>
+      <li><a href="#home"><i class="bi bi-house-door"></i> 家</a></li>
+      <li><a href="#misc"><i class="bi bi-gear"></i> 其他命令</a></li>
+    </ul>
+    <div class="grp">趣味与功能</div>
+    <ul>
+      <li><a href="#gsit"><i class="bi bi-person-bounding-box"></i> GSit 坐姿</a></li>
+      <li><a href="#gmusic"><i class="bi bi-music-note-beamed"></i> GMusic 音乐</a></li>
+      <li><a href="#litesignin"><i class="bi bi-calendar-check"></i> LiteSignIn 签到</a></li>
+      <li><a href="#gkey"><i class="bi bi-menu-button-wide"></i> G键菜单</a></li>
+    </ul>
+    <div class="grp">附录</div>
+    <ul>
+      <li><a href="#faq"><i class="bi bi-question-circle"></i> 常见问题</a></li>
+    </ul>
+  </nav>
+
+  <!-- 主内容 -->
+  <main>
+    <div class="breadcrumb"><i class="bi bi-house"></i> 首页 <span>/</span> 玩家教程 <span>/</span> 插件使用</div>
+    <h1 class="title">Wtcraft 服务器玩家插件使用教程</h1>
+    <p class="lead">本页汇总了服务器全部玩家可用插件的核心指令与使用说明，按功能模块分类整理。如仍有疑问，可在玩家群内询问，我们会持续完善本教程。</p>
+
+    <!-- ============ 登录 ============ -->
+    <section id="login">
+      <h2><i class="bi bi-shield-lock"></i> 登录插件 <span class="badge">账号安全</span></h2>
+      <p class="desc">用于离线模式下的账号注册、登录、改密与邮箱找回。首次进服必须注册，之后每次上线需登录。</p>
+
+      <h3>注册 / 登录</h3>
+      <table class="cmd">
+        <thead><tr><th width="34%">指令</th><th>别名</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">/register &lt;密码&gt; &lt;重复密码&gt;</td><td class="cmd">/reg</td><td>首次进服注册账号，两次密码需一致</td></tr>
+          <tr><td class="cmd">/login &lt;密码&gt;</td><td class="cmd">/l</td><td>每次上线登录账号</td></tr>
+        </tbody>
+      </table>
+
+      <h3>修改密码</h3>
+      <table class="cmd">
+        <thead><tr><th width="34%">指令</th><th>别名</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">/changepassword &lt;旧密码&gt; &lt;新密码&gt; &lt;重复新密码&gt;</td><td class="cmd">/changepw</td><td>修改登录密码，需提供旧密码</td></tr>
+        </tbody>
+      </table>
+
+      <h3>绑定邮箱（强烈建议）</h3>
+      <p>绑定邮箱后，如忘记密码可直接通过邮箱接收验证码找回，无需联系管理员。</p>
+      <ol class="steps">
+        <li>执行 <code>/bindemail set 你的邮箱@example.com</code>（或 <code>/bdmail set</code>），系统会向该邮箱发送验证码。</li>
+        <li>收到验证码后执行 <code>/bindemail verify 验证码</code>（或 <code>/bdmail verify</code>）完成绑定。</li>
+      </ol>
+
+      <h3>忘记密码（已绑定邮箱）</h3>
+      <ol class="steps">
+        <li>执行 <code>/resetpassword forget</code>（或 <code>/repw forget</code>），系统会再次向绑定邮箱发送验证码。</li>
+        <li>执行 <code>/bindemail re 验证码 新密码</code>（或 <code>/bdmail re 验证码 新密码</code>）设置新密码。</li>
+      </ol>
+
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>密码请勿使用与其它平台相同的密码；建议进服后第一时间绑定邮箱，以免遗忘密码后无法找回。</div></div>
+    </section>
+
+    <!-- ============ 皮肤 ============ -->
+    <section id="skin">
+      <h2><i class="bi bi-palette"></i> 皮肤插件 <span class="badge">外观</span></h2>
+      <p class="desc">支持直链皮肤、正版账号自动皮肤、LittleSkin 皮肤三种方式。</p>
+
+      <table class="cmd">
+        <thead><tr><th width="40%">指令</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">/skin url "链接"</td><td>使用皮肤直链（.png）设置皮肤，链接需用英文双引号包裹</td></tr>
+          <tr><td class="cmd">/skin update</td><td>更新当前皮肤（正版玩家换皮肤后同步）</td></tr>
+          <tr><td class="cmd">/skin clear</td><td>清除当前皮肤，恢复默认</td></tr>
+        </tbody>
+      </table>
+
+      <h3>三种获取皮肤方式</h3>
+      <ol class="steps">
+        <li><strong>直链方式：</strong>已有皮肤 .png 直链时，使用 <code>/skin url "https://example.com/skin.png"</code> 即可。</li>
+        <li><strong>正版账号：</strong>使用正版账号加入服务器，正常情况下服务器会自动为您应用对应正版账号的皮肤。</li>
+        <li><strong>LittleSkin 方式：</strong>前往
+          <a class="external-link" href="https://jiangmuran.com/applications/littleskin_getter/" target="_blank"><i class="bi bi-box-arrow-up-right"></i> LittleSkin Getter</a>
+          获取 littleskin 皮肤，或前往
+          <a class="external-link" href="https://skinsrestorer.net/upload" target="_blank"><i class="bi bi-box-arrow-up-right"></i> SkinsRestorer Upload</a>
+          上传，将网站给出的指令直接粘贴到服务器执行即可。</li>
+      </ol>
+
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>直链需为可公开访问的 .png 图片地址（推荐 64×32 或 64×64 格式），切勿使用需要登录才能查看的链接。</div></div>
+    </section>
+
+    <!-- ============ 举报 ============ -->
+    <section id="report">
+      <h2><i class="bi bi-flag"></i> 举报玩家 <span class="badge">秩序</span></h2>
+      <p class="desc">遇到违规行为可快速举报，举报理由通过 CUI 界面选择。</p>
+
+      <table class="cmd">
+        <thead><tr><th width="40%">指令</th><th>别名</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">/report &lt;玩家名&gt;</td><td class="cmd">/rp</td><td>弹出 CUI 界面，选择举报理由后提交</td></tr>
+        </tbody>
+      </table>
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>举报请如实填写，恶意举报可能被处理。</div></div>
+    </section>
+
+    <!-- ============ 领地 ============ -->
+    <section id="dominion">
+      <h2><i class="bi bi-shield-check"></i> 领地插件 Dominion <span class="badge">保护</span></h2>
+      <p class="desc">用于圈地保护建筑与箱子，防止他人破坏、偷窃。Dominion 是支持 Folia 的全新领地系统，可平替纯净版 Residence。</p>
+
+      <p>领地功能较为丰富（圈地、权限、子领地、传送点等），完整教程请访问官方 Wiki：</p>
+      <p>
+        <a class="external-link" href="https://dominion.lunadeer.cn/notes/doc/player/" target="_blank"><i class="bi bi-book"></i> 打开 Dominion 玩家文档</a>
+      </p>
+
+      <div class="note warn"><i class="bi bi-exclamation-triangle"></i><div><strong>注意：</strong>建议在建筑周围圈好领地后再放置贵重物品；未圈领地的区域无法得到保护。</div></div>
+    </section>
+
+    <!-- ============ 经济 ============ -->
+    <section id="economy">
+      <h2><i class="bi bi-cash-coin"></i> 经济插件 <span class="badge">交易</span></h2>
+      <p class="desc">查看余额、玩家间转账、官方商店与玩家市场。</p>
+
+      <table class="cmd">
+        <thead><tr><th width="34%">指令</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">/bal</td><td>查看自己的余额</td></tr>
+          <tr><td class="cmd">/eco &lt;玩家名&gt;</td><td>转账给指定玩家</td></tr>
+          <tr><td class="cmd">/warp WTC官方商店</td><td>传送到官方商店（购买基础物资）</td></tr>
+          <tr><td class="cmd">/market</td><td>打开玩家自主交易市场</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============ 传送 ============ -->
+    <section id="teleport">
+      <h2><i class="bi bi-geo-alt"></i> 玩家传送 <span class="badge">移动</span></h2>
+      <p class="desc">向他人发起传送请求，需对方同意；也可拉黑玩家避免被打扰。</p>
+
+      <table class="cmd">
+        <thead><tr><th width="34%">指令</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">/tpa &lt;玩家名称&gt;</td><td>向该玩家发送「传送到他身边」的请求</td></tr>
+          <tr><td class="cmd">/tphere &lt;玩家名称&gt;</td><td>请求该玩家传送到你身边</td></tr>
+          <tr><td class="cmd">/tpaccept</td><td>接受传送请求（也可点击聊天框 [接受] 直接接受）</td></tr>
+          <tr><td class="cmd">/tpdeny</td><td>拒绝传送请求（也可点击聊天框 [拒绝] / [拒绝并拉黑]）</td></tr>
+          <tr><td class="cmd">/denys add &lt;玩家名称&gt;</td><td>拉黑指定玩家（不再收到其传送请求）</td></tr>
+          <tr><td class="cmd">/denys remove &lt;玩家名称&gt;</td><td>解除拉黑</td></tr>
+        </tbody>
+      </table>
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>被频繁打扰时，可直接点击聊天框中的「拒绝并拉黑」一键处理。</div></div>
+    </section>
+
+    <!-- ============ 传送点 ============ -->
+    <section id="warp">
+      <h2><i class="bi bi-pin-map"></i> 传送点 <span class="badge">移动</span></h2>
+      <p class="desc">服务器预设的公共传送点。</p>
+      <table class="cmd">
+        <thead><tr><th width="34%">指令</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">/warp &lt;传送点&gt;</td><td>传送到指定公共传送点（如 <code>WTC官方商店</code>）</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============ 家 ============ -->
+    <section id="home">
+      <h2><i class="bi bi-house-door"></i> 家 <span class="badge">移动</span></h2>
+      <p class="desc">玩家自定义的私人传送点，可设置多个并指定默认家。</p>
+      <table class="cmd">
+        <thead><tr><th width="42%">指令</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">/sethome &lt;家名称&gt;</td><td>在当前位置设置一个家</td></tr>
+          <tr><td class="cmd">/home &lt;家名称&gt;</td><td>传送到指定家</td></tr>
+          <tr><td class="cmd">/homes</td><td>列出已设置的全部家</td></tr>
+          <tr><td class="cmd">/setdefaulthome &lt;家名称&gt;</td><td>将某个家设为默认（无参 /home 时传送目标）</td></tr>
+          <tr><td class="cmd">/delhome &lt;家名称&gt;</td><td>删除指定家</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============ 其他命令 ============ -->
+    <section id="misc">
+      <h2><i class="bi bi-gear"></i> 其他命令 <span class="badge">工具</span></h2>
+      <table class="cmd">
+        <thead><tr><th width="42%">指令</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">/back</td><td>传送到上一次的位置（如死亡点、传送前的位置）</td></tr>
+          <tr><td class="cmd">/rtp</td><td>随机传送到世界某处</td></tr>
+          <tr><td class="cmd">/tpa setlang &lt;clear/语言&gt;</td><td>设置客户端显示语言；<code>clear</code> 清除自定义恢复默认</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============ GSit ============ -->
+    <section id="gsit">
+      <h2><i class="bi bi-person-bounding-box"></i> GSit 坐姿插件 <span class="badge">趣味</span></h2>
+      <p class="desc">在方块上坐下、躺下、转圈、趴卧、爬行。也可直接右键楼梯/台阶/地毯坐下。</p>
+      <table class="cmd">
+        <thead><tr><th width="40%">指令</th><th>别名</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">/sit</td><td class="cmd">/gsit</td><td>在方块上坐下</td></tr>
+          <tr><td class="cmd">/lay</td><td class="cmd">/glay</td><td>在方块上躺下</td></tr>
+          <tr><td class="cmd">/bellyflop</td><td class="cmd">/gbellyflop</td><td>趴在方块上（肚皮贴地趴卧）</td></tr>
+          <tr><td class="cmd">/spin</td><td class="cmd">/gspin</td><td>在方块上原地转圈</td></tr>
+          <tr><td class="cmd">/crawl</td><td class="cmd">/gcrawl</td><td>在地面爬行（可通过 1 格高缝隙）</td></tr>
+        </tbody>
+      </table>
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>姿势与爬行功能仅适用于 Minecraft 1.17+ 版本。</div></div>
+    </section>
+
+    <!-- ============ GMusic ============ -->
+    <section id="gmusic">
+      <h2><i class="bi bi-music-note-beamed"></i> GMusic 音乐插件 <span class="badge">趣味</span></h2>
+      <p class="desc">在游戏内点播音乐，支持搜索与播放列表。</p>
+      <table class="cmd">
+        <thead><tr><th width="40%">指令</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">/music</td><td>打开音乐菜单，选择并播放音乐</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============ LiteSignIn ============ -->
+    <section id="litesignin">
+      <h2><i class="bi bi-calendar-check"></i> LiteSignIn 签到 <span class="badge">福利</span></h2>
+      <p class="desc">每日签到获取奖励，签到界面可查看连续签到天数与奖励列表。</p>
+      <table class="cmd">
+        <thead><tr><th width="40%">指令</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">/litesignin gui</td><td>打开签到菜单，进行每日签到</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============ BlockLocker ============ -->
+    <section id="blocklocker">
+      <h2><i class="bi bi-lock"></i> BlockLocker 箱子锁 <span class="badge">保护</span></h2>
+      <p class="desc">通过在箱子上放置告示牌自动上锁，无需潜行。</p>
+      <ol class="steps">
+        <li>手持告示牌，对着箱子（或其他容器）右键放置即可自动锁定，告示牌会显示你的ID。</li>
+        <li>只有告示牌上的玩家才能打开该容器。</li>
+      </ol>
+      <div class="note danger"><i class="bi bi-exclamation-octagon"></i><div><strong>重要安全提示：</strong>即便使用了告示牌箱子锁，仍强烈建议将箱子搬到家中并圈好领地。熊孩子会使用<strong>漏斗</strong>从底部吸走箱子中的物品；不圈领地还会导致基地被炸。箱子锁无法防漏斗，领地才是根本保护。</div></div>
+    </section>
+
+    <!-- ============ G键 ============ -->
+    <section id="gkey">
+      <h2><i class="bi bi-menu-button-wide"></i> G键菜单 <span class="badge">快捷</span></h2>
+      <p class="desc">一个 GUI 菜单，代替了旧版的 <code>/cd</code> 指令，集中常用功能入口。</p>
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>用法：</strong>按下键盘上的 <code>G</code> 键即可打开菜单（如未生效，请检查客户端按键冲突）。</div></div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section id="faq">
+      <h2><i class="bi bi-question-circle"></i> 常见问题</h2>
+      <h3>Q1：忘记密码且未绑定邮箱怎么办？</h3>
+      <p>A：请在玩家群内联系管理组，提供账号信息进行人工核验后重置。后续请尽快执行 <code>/bindemail set</code> 绑定邮箱。</p>
+
+      <h3>Q2：皮肤设置后别人看不到？</h3>
+      <p>A：让对方重新进入视野或执行 <code>/skin update</code> 刷新；若使用直链，确认链接为 .png 且可公开访问。</p>
+
+      <h3>Q3：箱子锁了还是被偷？</h3>
+      <p>A：箱子锁无法防止漏斗吸取。请将箱子搬到领地内，并圈好领地关闭容器权限。</p>
+
+      <h3>Q4：传送请求没反应？</h3>
+      <p>A：可能被对方拉黑（<code>/denys</code>）；或对方未注意聊天框提示，可提醒其点击 [接受]。</p>
+
+      <h3>Q5：领地怎么圈？</h3>
+      <p>A：详见 <a href="https://dominion.lunadeer.cn/notes/doc/player/" target="_blank">Dominion 官方玩家文档</a>。</p>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  © 2026 Wtcraft 服务器 · WTC 管理组 维护<br>
+  本页最后更新：2026 年 7 月 10 日 · 如有疑问请在群内询问，我们会持续完善本教程。
+</footer>
+
+<script>
+  // 目录跟随滚动高亮
+  const links = document.querySelectorAll('nav.toc a');
+  const sections = [...links].map(a => document.querySelector(a.getAttribute('href')));
+  window.addEventListener('scroll', () => {
+    let cur = sections[0];
+    for(const s of sections){
+      if(s && s.getBoundingClientRect().top <= 120) cur = s;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + (cur?.id||'')));
+  }, {passive:true});
+</script>
+
+</body>
+</html>
