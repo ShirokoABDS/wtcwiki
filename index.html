@@ -108,7 +108,7 @@
     </div>
     <div class="meta">
       维护：WTC 管理组<br>
-      文档版本：v1.3 · 2026-07-10
+      文档版本：v1.4 · 2026-07-12
     </div>
   </div>
 </header>
@@ -147,6 +147,7 @@
     </ul>
     <div class="grp">趣味与功能</div>
     <ul>
+      <li><a href="#brewery"><i class="bi bi-cup-straw"></i> Brewery 酿酒</a></li>
       <li><a href="#gsit"><i class="bi bi-person-bounding-box"></i> GSit 坐姿</a></li>
       <li><a href="#gmusic"><i class="bi bi-music-note-beamed"></i> GMusic 音乐</a></li>
       <li><a href="#litesignin"><i class="bi bi-calendar-check"></i> LiteSignIn 签到</a></li>
@@ -337,6 +338,17 @@
       <div class="note warn"><i class="bi bi-exclamation-triangle"></i><div><strong>注意：</strong>建议在建筑周围圈好领地后再放置贵重物品；未圈领地的区域无法得到保护。</div></div>
     </section>
 
+    <!-- ============ BlockLocker (已修正位置) ============ -->
+    <section id="blocklocker">
+      <h2><i class="bi bi-lock"></i> BlockLocker 箱子锁 <span class="badge">保护</span></h2>
+      <p class="desc">通过在箱子上放置告示牌自动上锁，无需潜行。</p>
+      <ol class="steps">
+        <li>手持告示牌，对着箱子（或其他容器）右键放置即可自动锁定，告示牌会显示你的ID。</li>
+        <li>只有告示牌上的玩家才能打开该容器。</li>
+      </ol>
+      <div class="note danger"><i class="bi bi-exclamation-octagon"></i><div><strong>重要安全提示：</strong>即便使用了告示牌箱子锁，仍强烈建议将箱子搬到家中并圈好领地。熊孩子会使用<strong>漏斗</strong>从底部吸走箱子中的物品；不圈领地还会导致基地被炸。箱子锁无法防漏斗，领地才是根本保护。</div></div>
+    </section>
+
     <!-- ============ 经济 ============ -->
     <section id="economy">
       <h2><i class="bi bi-cash-coin"></i> 经济插件 <span class="badge">交易</span></h2>
@@ -413,6 +425,43 @@
       </table>
     </section>
 
+    <!-- ============ Brewery 酿酒 ============ -->
+    <section id="brewery">
+      <h2><i class="bi bi-cup-straw"></i> Brewery 酿酒插件 <span class="badge">趣味</span></h2>
+      <p class="desc">Brewery 是一款替代原版酿造流程的插件，支持发酵、蒸馏、陈酿等完整酿酒流程，可制作真实能让玩家喝醉的酒精饮品。</p>
+
+      <h3>酿造流程概览</h3>
+      <p>酿造分为三个主要阶段，每个阶段都需要对应的设备：</p>
+      <ol class="steps">
+        <li><strong>发酵（炼药锅）：</strong>在炼药锅下方放置火源（火、岩浆、岩浆块或营火），加入水，再右键投入原料即可开始发酵。可用时钟右键炼药锅查看发酵时长。</li>
+        <li><strong>蒸馏（酿造台）：</strong>将发酵后的饮品放入酿造台，使用烈焰粉作为燃料进行蒸馏，提升酒精度数。</li>
+        <li><strong>陈酿（木桶）：</strong>将酒放入木桶中静置熟成，不同的木桶会影响饮品品质与口感。</li>
+      </ol>
+
+      <h3>常用指令</h3>
+      <table class="cmd">
+        <thead><tr><th width="40%">指令</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">/brew help</td><td>查看插件帮助页面</td></tr>
+          <tr><td class="cmd">/brew info</td><td>查看自己的醉酒状态信息</td></tr>
+          <tr><td class="cmd">/brew info &lt;玩家名&gt;</td><td>查看指定玩家的醉酒状态（需对应权限）</td></tr>
+          <tr><td class="cmd">/brew create &lt;配方名&gt;</td><td>通过指令直接酿造（需管理员权限）</td></tr>
+        </tbody>
+      </table>
+
+      <h3>醉酒效果</h3>
+      <p>饮用酒精饮品后会进入醉酒状态，表现为：步履蹒跚、聊天内容会被自动扭曲、出现各种状态效果；醉酒过度可能被踢出游戏或在 <code>/home</code> 位置醒来。低品质饮品还会带来宿醉等负面效果。</p>
+
+      <div class="note warn"><i class="bi bi-exclamation-triangle"></i><div><strong>注意：</strong>不要在战斗、下界、高空或危险区域大量饮酒，醉酒失控可能导致死亡或掉落损失，服务器不受理此类补偿。</div></div>
+
+      <h3>完整教程</h3>
+      <p>配方、木桶建造、蒸馏参数、自定义饮品等进阶内容较为复杂，请前往 BreweryX 官方文档查阅：</p>
+      <p>
+        <a class="external-link" href="https://breweryx.breweryteam.dev/" target="_blank"><i class="bi bi-box-arrow-up-right"></i> BreweryX 官方文档</a>
+      </p>
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>配方在游戏中不会直接公开，需要玩家自行尝试原料组合或向其他酿酒师请教，这也是本插件的核心乐趣之一。</div></div>
+    </section>
+
     <!-- ============ GSit ============ -->
     <section id="gsit">
       <h2><i class="bi bi-person-bounding-box"></i> GSit 坐姿插件 <span class="badge">趣味</span></h2>
@@ -454,17 +503,6 @@
       </table>
     </section>
 
-    <!-- ============ BlockLocker ============ -->
-    <section id="blocklocker">
-      <h2><i class="bi bi-lock"></i> BlockLocker 箱子锁 <span class="badge">保护</span></h2>
-      <p class="desc">通过在箱子上放置告示牌自动上锁，无需潜行。</p>
-      <ol class="steps">
-        <li>手持告示牌，对着箱子（或其他容器）右键放置即可自动锁定，告示牌会显示你的ID。</li>
-        <li>只有告示牌上的玩家才能打开该容器。</li>
-      </ol>
-      <div class="note danger"><i class="bi bi-exclamation-octagon"></i><div><strong>重要安全提示：</strong>即便使用了告示牌箱子锁，仍强烈建议将箱子搬到家中并圈好领地。熊孩子会使用<strong>漏斗</strong>从底部吸走箱子中的物品；不圈领地还会导致基地被炸。箱子锁无法防漏斗，领地才是根本保护。</div></div>
-    </section>
-
     <!-- ============ G键 ============ -->
     <section id="gkey">
       <h2><i class="bi bi-menu-button-wide"></i> G键菜单 <span class="badge">快捷</span></h2>
@@ -492,6 +530,12 @@
 
       <h3>Q6：领地保护期限是什么意思？</h3>
       <p>A：自 2026 年 7 月 15 日起，未圈领地的建筑若遭破坏，管理员将不再受理调查及补偿申请，请务必在此之前完成圈地。</p>
+
+      <h3>Q7：酿酒配方在哪里查？</h3>
+      <p>A：配方在游戏中不会直接公开，需自行尝试原料组合。进阶内容（蒸馏、陈酿、自定义配方等）请前往 <a href="https://breweryx.breweryteam.dev/" target="_blank">BreweryX 官方文档</a> 查阅。</p>
+
+      <h3>Q8：喝醉酒后掉进虚空/岩浆死了，能补偿吗？</h3>
+      <p>A：不能。因醉酒失控导致的死亡属于自身行为导致的风险，不在补偿受理范围内。请避免在危险区域大量饮酒。</p>
     </section>
 
   </main>
@@ -499,7 +543,7 @@
 
 <footer>
   © 2026 Wtcraft 服务器 · WTC 管理组 维护<br>
-  本页最后更新：2026 年 7 月 10 日 · 如有疑问请在群内询问，我们会持续完善本教程。
+  本页最后更新：2026 年 7 月 12 日 · 如有疑问请在群内询问，我们会持续完善本教程。
 </footer>
 
 <script>
