@@ -110,7 +110,7 @@
     </div>
     <div class="meta">
       维护：WTC 管理组<br>
-      文档版本：v1.5 · 2026-07-20
+      文档版本：v1.6 · 2026-07-22
     </div>
   </div>
 </header>
@@ -139,6 +139,7 @@
     <div class="grp">经济与交易</div>
     <ul>
       <li><a href="#economy"><i class="bi bi-cash-coin"></i> 经济系统</a></li>
+      <li><a href="#quickshop"><i class="bi bi-shop"></i> 箱子商店 QuickShop</a></li>
       <li><a href="#webshop"><i class="bi bi-bag"></i> 网页商店 WebShopX</a></li>
     </ul>
     <div class="grp">传送与坐标</div>
@@ -361,17 +362,98 @@
         <thead><tr><th width="34%">指令</th><th>说明</th></tr></thead>
         <tbody>
           <tr><td class="cmd">/bal</td><td>查看自己的余额</td></tr>
-          <tr><td class="cmd">/eco &lt;玩家名&gt;</td><td>转账给指定玩家</td></tr>
+          <tr><td class="cmd">/baltop</td><td>查看金额前十名</td></tr>
           <tr><td class="cmd">/warp WTC官方商店</td><td>传送到官方商店（购买基础物资）</td></tr>
-          <tr><td class="cmd">/market</td><td>打开玩家自主交易市场</td></tr>
         </tbody>
       </table>
+    </section>
+
+    <!-- ============ 箱子商店 QuickShop ============ -->
+    <section id="quickshop">
+      <h2><i class="bi bi-shop"></i> 箱子商店 QuickShop-Hikari <span class="badge">交易</span></h2>
+      <p class="desc">QuickShop-Hikari 是一款箱子商店插件，玩家无需任何指令即可通过箱子创建商店出售或收购物品，是最直观的玩家间交易方式<span data-allow-html class='source-item source-aggregated' data-group-key='source-group-1' data-url='http://mineplugin.org/QuickShop' data-id='turn0search1'><span data-allow-html class='source-item-num' data-group-key='source-group-1' data-id='turn0search1' data-url='http://mineplugin.org/QuickShop'><span class='source-item-num-name' data-allow-html></span><span data-allow-html class='source-item-num-count'></span></span></span></p>
+
+      <h3>创建商店（最简方法）</h3>
+      <p>整个创建过程不需要任何指令，只需三步：</p>
+      <ol class="steps">
+        <li><strong>放置箱子：</strong>在地上放一个箱子（或木桶等容器），作为商店的库存方块。</li>
+        <li><strong>左键点击箱子：</strong>手持你要出售的物品，<strong>左键</strong>（不是右键）点击该箱子。聊天框会提示你输入物品单价。</li>
+        <li><strong>输入单价：</strong>在聊天框输入物品单价（例如 <code>10</code>）并发送，商店即创建成功，箱子上方会出现悬浮展示物与告示牌显示交易信息<span data-allow-html class='source-item source-aggregated' data-group-key='source-group-3' data-url='http://mineplugin.org/QuickShop' data-id='turn0search1'><span data-allow-html class='source-item-num' data-group-key='source-group-3' data-id='turn0search1' data-url='http://mineplugin.org/QuickShop'><span class='source-item-num-name' data-allow-html></span><span data-allow-html class='source-item-num-count'></span></span></span>。</li>
+      </ol>
+      <div class="note danger"><i class="bi bi-exclamation-octagon"></i><div><strong>易错点：</strong>创建商店必须用<strong>左键</strong>点击箱子，而不是右键。右键会直接打开箱子而不会触发商店创建流程，这是新手最常踩的坑。</div></div>
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>创建商店时手持的物品即为商店售卖的货种，物品的附魔、耐久、NBT 等数据都会被记录，后续补货必须放入<strong>完全一致</strong>的物品才能上架<span data-allow-html class='source-item source-aggregated' data-group-key='source-group-4' data-url='http://mineplugin.org/QuickShop' data-id='turn0search1'><span data-allow-html class='source-item-num' data-group-key='source-group-4' data-id='turn0search1' data-url='http://mineplugin.org/QuickShop'><span class='source-item-num-name' data-allow-html></span><span data-allow-html class='source-item-num-count'></span></span></span>。</div></div>
+
+      <h3>补货</h3>
+      <p>商店创建好后，库存为 0 顾客无法购买。补货方式：</p>
+      <ol class="steps">
+        <li><strong>右键</strong>打开商店箱子（此时用右键才是打开）。</li>
+        <li>将与你商店货种<strong>完全一致</strong>的物品放入箱子。</li>
+        <li>关闭箱子，可售数量会随库存自动更新。</li>
+      </ol>
+
+      <h3>购买商品</h3>
+      <p>作为顾客购买他人商店的商品：</p>
+      <ol class="steps">
+        <li>找到目标商店，<strong>左键</strong>点击商店箱子或告示牌。</li>
+        <li>在聊天框输入你想购买的数量并发送。</li>
+        <li>系统自动扣款并将物品放入你的背包，交易完成<span data-allow-html class='source-item source-aggregated' data-group-key='source-group-5' data-url='https://docs.npucraft.com/SurvivalGuide/EconomicSystem/Shop.html' data-id='turn0search12'><span data-allow-html class='source-item-num' data-group-key='source-group-5' data-id='turn0search12' data-url='https://docs.npucraft.com/SurvivalGuide/EconomicSystem/Shop.html'><span class='source-item-num-name' data-allow-html></span><span data-allow-html class='source-item-num-count'></span></span></span>。</li>
+      </ol>
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>购买前请确认背包有足够空位与余额，背包空间不足可能导致交易失败或部分失败。</div></div>
+
+      <h3>管理商店</h3>
+      <p>商店创建后，可以通过两种方式管理：<strong>右键打开控制面板</strong>，或<strong>使用指令</strong>。</p>
+
+      <h4>方式一：控制面板（推荐）</h4>
+      <p><strong>右键</strong>点击你的商店（或商店告示牌），会弹出聊天框控制面板，可点击对应文字一键完成以下操作：</p>
+      <ul>
+        <li>修改价格</li>
+        <li>切换出售 / 收购模式</li>
+        <li>冻结 / 解冻商店（临时歇业）</li>
+        <li>查看交易记录</li>
+        <li>移除商店</li>
+        <li>管理店员</li>
+      </ul>
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>控制面板是 QuickShop-Hikari 的核心交互方式，大部分日常管理都无需输入指令，点击即可完成<span data-allow-html class='source-item source-aggregated' data-group-key='source-group-6' data-url='https://www.mcbbs.fun/thread-4469-1-1.html' data-id='turn0search7'><span data-allow-html class='source-item-num' data-group-key='source-group-6' data-id='turn0search7' data-url='https://www.mcbbs.fun/thread-4469-1-1.html'><span class='source-item-num-name' data-allow-html></span><span data-allow-html class='source-item-num-count'></span></span></span>。</div></div>
+
+      <h4>方式二：指令管理</h4>
+      <p>准星对准你的商店后，可使用以下指令（别名 <code>/qs</code>）：</p>
+      <table class="cmd">
+        <thead><tr><th width="42%">指令</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">/qs price &lt;价格&gt;</td><td>修改商店价格</td></tr>
+          <tr><td class="cmd">/qs sell</td><td>切换为出售模式（玩家向你购买）</td></tr>
+          <tr><td class="cmd">/qs buy</td><td>切换为收购模式（玩家向你出售物品）</td></tr>
+          <tr><td class="cmd">/qs find &lt;物品名&gt;</td><td>查找附近出售指定物品的商店（如 <code>/qs find dia</code> 查找钻石商店）</td></tr>
+          <tr><td class="cmd">/qs staff add &lt;玩家名&gt;</td><td>添加店员（可帮你管理库存）</td></tr>
+          <tr><td class="cmd">/qs staff del &lt;玩家名&gt;</td><td>移除店员</td></tr>
+          <tr><td class="cmd">/qs staff list</td><td>查看当前店员列表</td></tr>
+          <tr class="admin"><td class="cmd">/qs unlimited</td><td>将商店设为无限库存（管理员专用）</td></tr>
+          <tr class="admin"><td class="cmd">/qs setowner &lt;玩家名&gt;</td><td>更改商店所有者（管理员专用）</td></tr>
+          <tr class="admin"><td class="cmd">/qs clean</td><td>清除所有库存为 0 的商店（管理员专用）</td></tr>
+        </tbody>
+      </table>
+      <div class="note warn"><i class="bi bi-shield-exclamation"></i><div><strong>权限说明：</strong>表中最后三条标注为<strong>管理员专用</strong>，普通玩家执行无效。<code>/qs unlimited</code> 可将商店设为无限库存（适合官方物资店），<code>/qs setowner</code> 可转让商店所有权。</div></div>
+
+      <h3>移除商店</h3>
+      <p>拆除商店只需<strong>破坏商店箱子</strong>即可，商店会自动注销，箱内剩余物品会掉落。也可以通过右键控制面板中的「移除商店」选项操作。</p>
+
+      <div class="note danger"><i class="bi bi-exclamation-octagon"></i><div><strong>安全提示：</strong>商店箱子本身<strong>没有锁</strong>，任何人都可能破坏你的商店箱子。请务必将商店建在<strong>已圈领地</strong>的区域内，关闭他人对该箱子的破坏权限，避免商店被恶意拆除或库存被盗。</div></div>
+
+      <div class="note warn"><i class="bi bi-exclamation-triangle"></i><div><strong>收购模式注意：</strong>切换为收购模式后，其他玩家会把物品卖给你并从你账户扣款。请确保账户有足够余额，并定期清理收购箱中已满的物品，否则交易会失败。</div></div>
+
+      <h3>插件原地址与完整文档</h3>
+      <p>更多功能（多货币、税收、悬浮物自定义、批量堆叠商店等）请前往插件主页与官方文档查阅：</p>
+      <p>
+        <a class="external-link" href="https://modrinth.com/plugin/quickshop-hikari" target="_blank"><i class="bi bi-box-arrow-up-right"></i> Modrinth 插件主页</a>
+        &nbsp;
+        <a class="external-link" href="https://quickshop-community.github.io/QuickShop-Hikari-Documents/zh-CN/" target="_blank"><i class="bi bi-book"></i> 官方文档（中文）</a>
+      </p>
     </section>
 
     <!-- ============ 网页商店 WebShopX ============ -->
     <section id="webshop">
       <h2><i class="bi bi-bag"></i> 网页商店 WebShopX <span class="badge">交易</span></h2>
-      <p class="desc">基于网页的交易系统，玩家可在网页中进行官方物品购买、玩家物品购买/出售，以及拍卖。支持官方商城（B2C）+ 玩家市场（C2C）+ 拍卖行 + 订单履约一体化<span data-allow-html class='source-item source-aggregated' data-group-key='source-group-3' data-url='https://modrinth.com/plugin/webshopx' data-id='turn0fetch0'><span data-allow-html class='source-item-num' data-group-key='source-group-3' data-id='turn0fetch0' data-url='https://modrinth.com/plugin/webshopx'><span class='source-item-num-name' data-allow-html>modrinth.com</span><span data-allow-html class='source-item-num-count'></span></span></span>。</p>
+      <p class="desc">基于网页的交易系统，玩家可在网页中进行官方物品购买、玩家物品购买/出售，以及拍卖。支持官方商城（B2C）+ 玩家市场（C2C）+ 拍卖行 + 订单履约一体化。</p>
 
       <h3>商店网址</h3>
       <p>请在浏览器中访问以下地址进入网页商店：</p>
@@ -613,7 +695,19 @@
       <p>A：在游戏内手持要出售的物品，执行 <code>/ws market sell &lt;价格&gt;</code> 即可快速上架；也可以登录网页端进行改价、备注、暂停/下架等更详细的管理。</p>
 
       <h3>Q12：网页商店打不开 / 登录失败怎么办？</h3>
-      <p>A：请依次检查：① 网址是否为 <code>https://wtshou.fucku.top</code>；② 是否已在游戏内设置过网页密码（<code>/ws password</code>）；③ 输入的是游戏 ID 而非邮箱；④ 若密码遗忘，重新执行 <code>/ws password &lt;新密码&gt;</code> 重置后再登录。</p>
+      <p>A：请依次检查：① 网址是否为 <code>http://wtshop.fucku.top</code>；② 是否已在游戏内设置过网页密码（<code>/ws password</code>）；③ 输入的是游戏 ID 而非邮箱；④ 若密码遗忘，重新执行 <code>/ws password &lt;新密码&gt;</code> 重置后再登录。</p>
+
+      <h3>Q13：箱子商店怎么创建？左键还是右键？</h3>
+      <p>A：手持要卖的物品，<strong>左键</strong>（不是右键）点击箱子，然后在聊天框输入单价即可。右键只会打开箱子而不会触发商店创建。</p>
+
+      <h3>Q14：箱子商店的箱子会被别人破坏吗？</h3>
+      <p>A：会。QuickShop 商店箱子本身没有锁，任何人都能破坏。请务必将商店建在已圈领地的区域内，关闭他人对该箱子的破坏权限。</p>
+
+      <h3>Q15：怎么改箱子商店的价格？</h3>
+      <p>A：右键你的商店打开控制面板，点击「修改价格」即可；也可以准星对准商店后执行 <code>/qs price &lt;新价格&gt;</code>。</p>
+
+      <h3>Q16：怎么把出售商店改成收购商店？</h3>
+      <p>A：右键商店打开控制面板切换模式，或准星对准商店执行 <code>/qs buy</code> 切换为收购模式；用 <code>/qs sell</code> 切回出售模式。</p>
     </section>
 
   </main>
@@ -621,7 +715,7 @@
 
 <footer>
   © 2026 Wtcraft 服务器 · WTC 管理组 维护<br>
-  本页最后更新：2026 年 7 月 20 日 · 如有疑问请在群内询问，我们会持续完善本教程。
+  本页最后更新：2026 年 7 月 22 日 · 如有疑问请在群内询问，我们会持续完善本教程。
 </footer>
 
 <script>
