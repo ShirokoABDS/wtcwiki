@@ -19,6 +19,10 @@
     --tip-bg:#161b22;      --tip-border:#8b949e;
     --warn-bg:#1c1208;     --warn-border:#d29922;
     --danger-bg:#27131a;   --danger-border:#f85149;
+
+    /* ===== 非线性缓动曲线（动画层新增） ===== */
+    --ease-out-expo:cubic-bezier(0.16,1,0.3,1);          /* 快出缓停 */
+    --ease-out-back:cubic-bezier(0.34,1.56,0.64,1);      /* 弹性过冲 */
   }
   *{box-sizing:border-box;}
   body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;}
@@ -58,6 +62,7 @@
   section h2 .badge.admin{background:#3b1d1d;color:#ff7b72;}
   section .desc{color:var(--muted);font-size:13px;margin:12px 0 16px;}
   section h3{font-size:16px;margin:20px 0 8px;font-weight:600;color:#fff;}
+  section h4{font-size:14.5px;margin:16px 0 6px;font-weight:600;color:#fff;}
 
   table.cmd{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0 10px;}
   table.cmd th,table.cmd td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top;}
@@ -98,11 +103,78 @@
     nav.toc{position:static;max-height:none;}
     header .meta{margin:0;text-align:left;}
   }
+
+  /* ============================================================
+     ===== 非线性动画层（仅保留 5 项） =====
+     ============================================================ */
+
+  /* 0. 页面加载前隐藏待动画元素，避免闪现 */
+  body.preload h1.title,
+  body.preload nav.toc,
+  body.preload section{opacity:0;}
+
+  /* ---- 动画 #2：主标题字符逐个弹跳（每字错开 45ms + 弹性过冲） ---- */
+  h1.title .ch{
+    display:inline-block;
+    animation:chIn .6s var(--ease-out-back) both;
+  }
+  @keyframes chIn{
+    from{opacity:0;transform:translateY(18px) rotate(6deg) scale(.6);}
+    to{opacity:1;transform:translateY(0) rotate(0) scale(1);}
+  }
+
+  /* ---- 动画 #3：侧边栏滑入（快出缓停） ---- */
+  nav.toc{
+    animation:tocIn .7s var(--ease-out-expo) .15s both;
+  }
+  @keyframes tocIn{
+    from{opacity:0;transform:translateX(-28px);}
+    to{opacity:1;transform:translateX(0);}
+  }
+
+  /* ---- 动画 #6：章节卡片滚动 3D 翻入（rotateX 7°→0） ---- */
+  section.rv{
+    animation:secIn .75s var(--ease-out-expo) both;
+  }
+  @keyframes secIn{
+    from{
+      opacity:0;
+      transform:translateY(36px) rotateX(7deg) scale(.97);
+    }
+    to{
+      opacity:1;
+      transform:translateY(0) rotateX(0) scale(1);
+    }
+  }
+
+  /* ---- 动画 #8：表格行波浪式淡入（横向滑入，JS 设置 --d 交错延迟） ---- */
+  tr.row-rv{
+    animation:rowIn .5s var(--ease-out-expo) both;
+    animation-delay:var(--d,0s);
+  }
+  @keyframes rowIn{
+    from{opacity:0;transform:translateX(-14px);}
+    to{opacity:1;transform:translateX(0);}
+  }
+
+  /* 尊重系统减弱动效设置 */
+  @media (prefers-reduced-motion:reduce){
+    h1.title .ch,
+    nav.toc,
+    section.rv,
+    tr.row-rv{
+      animation-duration:.01ms!important;
+      animation-delay:0s!important;
+    }
+    body.preload h1.title,
+    body.preload nav.toc,
+    body.preload section{opacity:1;}
+  }
 </style>
 </head>
-<body>
+<body class="preload">
 
-<header>
+<header id="page-header">
   <div class="wrap">
     <div>
       <div class="logo"><i class="bi bi-box-seam-fill"></i> Wtcraft Wiki</div>
@@ -110,7 +182,7 @@
     </div>
     <div class="meta">
       维护：WTC 管理组<br>
-      文档版本：v1.6 · 2026-07-22
+      文档版本：v1.7 · 2026-09-13
     </div>
   </div>
 </header>
@@ -151,6 +223,7 @@
     </ul>
     <div class="grp">趣味与功能</div>
     <ul>
+      <li><a href="#farmers-delight"><i class="bi bi-egg-fried"></i> 农夫乐事</a></li>
       <li><a href="#brewery"><i class="bi bi-cup-straw"></i> Brewery 酿酒</a></li>
       <li><a href="#gsit"><i class="bi bi-person-bounding-box"></i> GSit 坐姿</a></li>
       <li><a href="#gmusic"><i class="bi bi-music-note-beamed"></i> GMusic 音乐</a></li>
@@ -166,7 +239,7 @@
   <!-- 主内容 -->
   <main>
     <div class="breadcrumb"><i class="bi bi-house"></i> 首页 <span>/</span> 玩家教程 <span>/</span> 插件使用</div>
-    <h1 class="title">Wtcraft 服务器玩家使用文档</h1>
+    <h1 class="title" id="page-title">Wtcraft 服务器玩家使用文档</h1>
     <p class="lead">本页包含服务器规则、插件使用教程等内容，按模块分类整理。如仍有疑问，可在玩家群内询问，我们会持续完善本教程。</p>
 
     <!-- ============ 服规 ============ -->
@@ -371,17 +444,17 @@
     <!-- ============ 箱子商店 QuickShop ============ -->
     <section id="quickshop">
       <h2><i class="bi bi-shop"></i> 箱子商店 QuickShop-Hikari <span class="badge">交易</span></h2>
-      <p class="desc">QuickShop-Hikari 是一款箱子商店插件，玩家无需任何指令即可通过箱子创建商店出售或收购物品，是最直观的玩家间交易方式<span data-allow-html class='source-item source-aggregated' data-group-key='source-group-1' data-url='http://mineplugin.org/QuickShop' data-id='turn0search1'><span data-allow-html class='source-item-num' data-group-key='source-group-1' data-id='turn0search1' data-url='http://mineplugin.org/QuickShop'><span class='source-item-num-name' data-allow-html></span><span data-allow-html class='source-item-num-count'></span></span></span></p>
+      <p class="desc">QuickShop-Hikari 是一款箱子商店插件，玩家无需任何指令即可通过箱子创建商店出售或收购物品，是最直观的玩家间交易方式。</p>
 
       <h3>创建商店（最简方法）</h3>
       <p>整个创建过程不需要任何指令，只需三步：</p>
       <ol class="steps">
         <li><strong>放置箱子：</strong>在地上放一个箱子（或木桶等容器），作为商店的库存方块。</li>
         <li><strong>左键点击箱子：</strong>手持你要出售的物品，<strong>左键</strong>（不是右键）点击该箱子。聊天框会提示你输入物品单价。</li>
-        <li><strong>输入单价：</strong>在聊天框输入物品单价（例如 <code>10</code>）并发送，商店即创建成功，箱子上方会出现悬浮展示物与告示牌显示交易信息<span data-allow-html class='source-item source-aggregated' data-group-key='source-group-3' data-url='http://mineplugin.org/QuickShop' data-id='turn0search1'><span data-allow-html class='source-item-num' data-group-key='source-group-3' data-id='turn0search1' data-url='http://mineplugin.org/QuickShop'><span class='source-item-num-name' data-allow-html></span><span data-allow-html class='source-item-num-count'></span></span></span>。</li>
+        <li><strong>输入单价：</strong>在聊天框输入物品单价（例如 <code>10</code>）并发送，商店即创建成功，箱子上方会出现悬浮展示物与告示牌显示交易信息。</li>
       </ol>
       <div class="note danger"><i class="bi bi-exclamation-octagon"></i><div><strong>易错点：</strong>创建商店必须用<strong>左键</strong>点击箱子，而不是右键。右键会直接打开箱子而不会触发商店创建流程，这是新手最常踩的坑。</div></div>
-      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>创建商店时手持的物品即为商店售卖的货种，物品的附魔、耐久、NBT 等数据都会被记录，后续补货必须放入<strong>完全一致</strong>的物品才能上架<span data-allow-html class='source-item source-aggregated' data-group-key='source-group-4' data-url='http://mineplugin.org/QuickShop' data-id='turn0search1'><span data-allow-html class='source-item-num' data-group-key='source-group-4' data-id='turn0search1' data-url='http://mineplugin.org/QuickShop'><span class='source-item-num-name' data-allow-html></span><span data-allow-html class='source-item-num-count'></span></span></span>。</div></div>
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>创建商店时手持的物品即为商店售卖的货种，物品的附魔、耐久、NBT 等数据都会被记录，后续补货必须放入<strong>完全一致</strong>的物品才能上架。</div></div>
 
       <h3>补货</h3>
       <p>商店创建好后，库存为 0 顾客无法购买。补货方式：</p>
@@ -396,7 +469,7 @@
       <ol class="steps">
         <li>找到目标商店，<strong>左键</strong>点击商店箱子或告示牌。</li>
         <li>在聊天框输入你想购买的数量并发送。</li>
-        <li>系统自动扣款并将物品放入你的背包，交易完成<span data-allow-html class='source-item source-aggregated' data-group-key='source-group-5' data-url='https://docs.npucraft.com/SurvivalGuide/EconomicSystem/Shop.html' data-id='turn0search12'><span data-allow-html class='source-item-num' data-group-key='source-group-5' data-id='turn0search12' data-url='https://docs.npucraft.com/SurvivalGuide/EconomicSystem/Shop.html'><span class='source-item-num-name' data-allow-html></span><span data-allow-html class='source-item-num-count'></span></span></span>。</li>
+        <li>系统自动扣款并将物品放入你的背包，交易完成。</li>
       </ol>
       <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>购买前请确认背包有足够空位与余额，背包空间不足可能导致交易失败或部分失败。</div></div>
 
@@ -413,7 +486,7 @@
         <li>移除商店</li>
         <li>管理店员</li>
       </ul>
-      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>控制面板是 QuickShop-Hikari 的核心交互方式，大部分日常管理都无需输入指令，点击即可完成<span data-allow-html class='source-item source-aggregated' data-group-key='source-group-6' data-url='https://www.mcbbs.fun/thread-4469-1-1.html' data-id='turn0search7'><span data-allow-html class='source-item-num' data-group-key='source-group-6' data-id='turn0search7' data-url='https://www.mcbbs.fun/thread-4469-1-1.html'><span class='source-item-num-name' data-allow-html></span><span data-allow-html class='source-item-num-count'></span></span></span>。</div></div>
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>控制面板是 QuickShop-Hikari 的核心交互方式，大部分日常管理都无需输入指令，点击即可完成。</div></div>
 
       <h4>方式二：指令管理</h4>
       <p>准星对准你的商店后，可使用以下指令（别名 <code>/qs</code>）：</p>
@@ -573,6 +646,89 @@
       </table>
     </section>
 
+    <!-- ============ 农夫乐事 ============ -->
+    <section id="farmers-delight">
+      <h2><i class="bi bi-egg-fried"></i> 农夫乐事 Paper's Delight <span class="badge">玩法</span></h2>
+      <p class="desc">服务器通过 CraftEngine（CE）还原了《农夫乐事》绝大部分玩法，并附赠饺子乐事、末地乐事等更多附属内容。无需安装任何模组，进服即可体验完整的农耕、烹饪与料理增益玩法。</p>
+
+      <h3>玩法概览</h3>
+      <p>农夫乐事围绕「新作物种植 → 厨具加工 → 料理增益」的闭环展开，同时提供丰富的装饰性方块（绳栅栏、榻榻米、篮子等）。整体流程：</p>
+      <ol class="steps">
+        <li><strong>种植新作物：</strong>在耕地或沃土上种植番茄、洋葱、卷心菜等新作物，水稻需种植在水边（具体作物清单以服务器实装为准）。</li>
+        <li><strong>砧板加工：</strong>手持刀右键砧板，将生肉、蔬菜等切片、切丁，部分配方的食材必须先经过砧板处理。</li>
+        <li><strong>烹饪料理：</strong>在烹饪锅中组合多种食材，制作汤、炖菜、意面、饮品等复杂料理。</li>
+        <li><strong>享用增益：</strong>食用做好的料理，除了恢复饥饿值外还会获得速度、生命恢复等增益效果。</li>
+      </ol>
+
+      <h3>核心厨具</h3>
+      <table class="cmd">
+        <thead><tr><th width="22%">厨具</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">烹饪锅</td><td>核心厨具。6 格食材槽 + 1 格容器槽，下方需有热源并加水，可烹制多食材料理；做好的汤/炖菜会自动盛入容器槽的碗中</td></tr>
+          <tr><td class="cmd">炉灶</td><td>无需燃料的高效热源，顶面可同时放置烹饪多个食物，是烹饪锅的最佳搭档</td></tr>
+          <tr><td class="cmd">煎锅</td><td>放置后可直接煎炒食物，成品会自动抛到侧面，建议在旁边放篮子自动收集</td></tr>
+          <tr><td class="cmd">砧板 + 刀</td><td>食材预处理台。手持刀右键砧板切分食材，产物会弹到一侧，便于自动化</td></tr>
+          <tr><td class="cmd">篮子</td><td>类似漏斗的收集容器，自动收集开口方向的掉落物，可用红石信号锁定，非常适合放在炉灶、煎锅、砧板旁自动收菜</td></tr>
+        </tbody>
+      </table>
+
+      <h3>烹饪锅可用热源</h3>
+      <p>烹饪锅必须放置在有效热源的正上方才能工作，以下任意一种均可（热源也可透过漏斗等方块传导，便于隐藏）：</p>
+      <table class="cmd">
+        <thead><tr><th width="34%">热源</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">炉灶</td><td>推荐。无需燃料，稳定高效</td></tr>
+          <tr><td class="cmd">篝火 / 灵魂篝火</td><td>早期最容易获得的热源，同样无需燃料</td></tr>
+          <tr><td class="cmd">岩浆块</td><td>廉价稳定，适合大型厨房阵列</td></tr>
+          <tr><td class="cmd">火 / 灵魂火 / 熔岩</td><td>可用，但注意防火安全</td></tr>
+        </tbody>
+      </table>
+
+      <h3>新作物与沃土</h3>
+      <table class="cmd">
+        <thead><tr><th width="34%">内容</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">番茄 / 洋葱 / 卷心菜</td><td>常规新作物，种在耕地即可，是多数料理的基础蔬菜</td></tr>
+          <tr><td class="cmd">水稻</td><td>需种植在水边或水田环境，收获稻米与稻草，稻草是绳子等物品的原材料</td></tr>
+          <tr><td class="cmd">沃土</td><td>高级耕地，可加速作物生长，尤其适合新作物，建议用堆肥制作后替换普通耕地</td></tr>
+        </tbody>
+      </table>
+
+      <h3>烹饪锅使用步骤</h3>
+      <ol class="steps">
+        <li><strong>放置与供热：</strong>放置烹饪锅，在其正下方放置有效热源（篝火或炉灶均可）。</li>
+        <li><strong>加水：</strong>用水桶右键烹饪锅加水（或放置在水源旁自动补水）。</li>
+        <li><strong>投料：</strong>打开烹饪锅界面，将食材放入 6 个食材槽。建议按「主粮（小麦/稻米）→ 蔬菜 → 其他」的顺序投放。</li>
+        <li><strong>放容器：</strong>在容器槽放入空碗（汤/炖菜类）或玻璃瓶（饮品类），<strong>不放容器无法取出成品</strong>。</li>
+        <li><strong>取餐：</strong>烹饪完成后从输出槽取走料理，食用即可获得对应增益效果。</li>
+      </ol>
+
+      <h3>附属内容</h3>
+      <p>本服随本体一并实装了以下附属（具体内容以游戏内实际实装为准）：</p>
+      <table class="cmd">
+        <thead><tr><th width="34%">附属</th><th>内容方向</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">饺子乐事</td><td>饺子系列料理与相关食材加工玩法</td></tr>
+          <tr><td class="cmd">末地乐事</td><td>末地主题的食材与特色料理</td></tr>
+          <tr><td class="cmd">成吉思鸡</td><td>热梗“成吉思鸡”</td></tr>
+          <tr><td class="cmd">玉米乐事</td><td>玉米系列料理与相关食材加工玩法</td></tr>
+          <tr><td class="cmd">乡村乐事</td><td>乡村、饮料系列料理与相关食材加工玩法</td></tr>
+          <tr><td class="cmd">蔬菜乐事</td><td>蔬菜主题的食材与特色料理</td></tr>
+          <tr><td class="cmd">装箱乐事</td><td>各种蔬菜与作物都能装到箱子中</td></tr>
+          <tr><td class="cmd">存储乐事</td><td>提供各种各样的存储箱子</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note warn"><i class="bi bi-exclamation-triangle"></i><div><strong>注意：</strong>作物清单、配方与物品名称以服务器内实际实装为准。本服基于 CE 实现，部分细节（如绳子特殊放置、榻榻米连接、绳栅栏等）与原模组存在实现差异，请以游戏内表现为准。热源如放在漏斗下方可正常传导热量，可用于隐藏式厨房设计。</div></div>
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>配方不会全部直接公开，多尝试食材组合是本玩法的乐趣之一；也可以在玩家群内向其他「厨师」请教。</div></div>
+
+      <h3>TIPS</h3>
+      <p>如果你是WTC服务器管理员请前往 Paper's Delight 官方文档查阅如何使用此插件，玩家无需查阅：</p>
+      <p>
+        <a class="external-link" href="https://takodoc.gitbook.io/papers-delight" target="_blank"><i class="bi bi-box-arrow-up-right"></i> Paper's Delight 官方文档(管理员)</a>
+      </p>
+    </section>
+
     <!-- ============ Brewery 酿酒 ============ -->
     <section id="brewery">
       <h2><i class="bi bi-cup-straw"></i> Brewery 酿酒插件 <span class="badge">趣味</span></h2>
@@ -708,6 +864,15 @@
 
       <h3>Q16：怎么把出售商店改成收购商店？</h3>
       <p>A：右键商店打开控制面板切换模式，或准星对准商店执行 <code>/qs buy</code> 切换为收购模式；用 <code>/qs sell</code> 切回出售模式。</p>
+
+      <h3>Q17：玩农夫乐事需要装模组吗？</h3>
+      <p>A：不需要。服务器通过 CraftEngine（CE）在服务端实现了农夫乐事及附属玩法，任何客户端直接进服即可体验。</p>
+
+      <h3>Q18：烹饪锅怎么不工作 / 做不出菜？</h3>
+      <p>A：依次检查：① 锅的正下方是否有有效热源（篝火/炉灶/岩浆块等）；② 锅里是否加了水；③ 食材组合是否为有效配方（可参考 Paper's Delight 文档）；④ 容器槽是否放了空碗或玻璃瓶——没放容器是取不出成品的。</p>
+
+      <h3>Q19：农夫乐事的配方在哪里查？</h3>
+      <p>A：游戏内部分配方需自行尝试，具体以服务器实装为准。可以向管理员求助，管理员可见合成配方。</p>
     </section>
 
   </main>
@@ -715,20 +880,94 @@
 
 <footer>
   © 2026 Wtcraft 服务器 · WTC 管理组 维护<br>
-  本页最后更新：2026 年 7 月 22 日 · 如有疑问请在群内询问，我们会持续完善本教程。
+  本页最后更新：2026 年 9 月 13 日 · 如有疑问请在群内询问，我们会持续完善本教程。
 </footer>
 
 <script>
-  // 目录跟随滚动高亮
+/* ============================================================
+   ===== 非线性动画脚本层（仅保留 5 项） =====
+   ============================================================ */
+(function(){
+  'use strict';
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- 释放 preload，触发入场动画 ---------- */
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    document.body.classList.remove('preload');
+  }));
+
+  /* ---- 动画 #2：主标题字符逐个弹跳（每字错开 45ms + 弹性过冲） ---- */
+  const title = document.getElementById('page-title');
+  if(title && !reduced){
+    const text = title.textContent;
+    title.textContent = '';
+    const frag = document.createDocumentFragment();
+    [...text].forEach((ch,i)=>{
+      const s = document.createElement('span');
+      s.className = 'ch';
+      s.textContent = ch;
+      s.style.animationDelay = (0.1 + i*0.045) + 's';
+      frag.appendChild(s);
+    });
+    title.appendChild(frag);
+  }
+
+  /* ---- 动画 #6 + #8：章节卡片 3D 翻入 & 表格行波浪式淡入 ---- */
+  const sections = document.querySelectorAll('section');
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        /* #6：章节卡片 3D 翻入（rotateX 7°→0，快出缓停） */
+        e.target.classList.add('rv');
+        /* #8：章节内表格行波浪式淡入（交错延迟） */
+        e.target.querySelectorAll('table tbody tr').forEach((tr,i)=>{
+          tr.classList.add('row-rv');
+          tr.style.setProperty('--d', Math.min(i*0.05, 0.5) + 's');
+        });
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.08, rootMargin:'0px 0px -6% 0px'});
+  sections.forEach(s=>io.observe(s));
+
+  /* ---- 动画 #10：页头视差（translateY ∝ √scrollY，前快后慢） ---- */
+  const header = document.getElementById('page-header');
+  let ticking = false;
+  function onScroll(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(()=>{
+      const y = window.scrollY;
+      if(header && !reduced){
+        if(y < 260){
+          header.style.transform = `translateY(${Math.sqrt(y)*0.9}px)`;
+          header.style.opacity = String(Math.max(0.25, 1 - y/280));
+        }else{
+          header.style.transform = '';
+          header.style.opacity = '';
+        }
+      }
+      updateToc();
+      ticking = false;
+    });
+  }
+
+  /* ---------- 目录跟随滚动高亮（原有功能，非动画） ---------- */
   const links = document.querySelectorAll('nav.toc a');
-  const sections = [...links].map(a => document.querySelector(a.getAttribute('href')));
-  window.addEventListener('scroll', () => {
-    let cur = sections[0];
-    for(const s of sections){
+  const tocSections = [...links].map(a => document.querySelector(a.getAttribute('href')));
+  function updateToc(){
+    let cur = tocSections[0];
+    for(const s of tocSections){
       if(s && s.getBoundingClientRect().top <= 120) cur = s;
     }
     links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + (cur?.id||'')));
-  }, {passive:true});
+  }
+
+  window.addEventListener('scroll', onScroll, {passive:true});
+  updateToc();
+})();
 </script>
 
 </body>
