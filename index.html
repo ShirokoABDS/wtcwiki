@@ -19,10 +19,6 @@
     --tip-bg:#161b22;      --tip-border:#8b949e;
     --warn-bg:#1c1208;     --warn-border:#d29922;
     --danger-bg:#27131a;   --danger-border:#f85149;
-
-    /* ===== 非线性缓动曲线（动画层新增） ===== */
-    --ease-out-expo:cubic-bezier(0.16,1,0.3,1);          /* 快出缓停 */
-    --ease-out-back:cubic-bezier(0.34,1.56,0.64,1);      /* 弹性过冲 */
   }
   *{box-sizing:border-box;}
   body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;}
@@ -55,6 +51,23 @@
   h1.title{font-size:28px;margin:0 0 6px;font-weight:700;color:#fff;}
   .lead{color:var(--muted);margin:0 0 18px;font-size:14px;}
 
+  /* 搜索框 */
+  .search-box{position:sticky;top:8px;z-index:100;margin:0 0 18px;}
+  .search-box .search-inner{position:relative;}
+  .search-box input{width:100%;padding:10px 14px 10px 40px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:14px;outline:none;box-shadow:0 4px 16px rgba(0,0,0,.4);}
+  .search-box input::placeholder{color:var(--muted);}
+  .search-box input:focus{border-color:#8b949e;}
+  .search-box .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
+  #search-results{display:none;position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--card);border:1px solid var(--border);border-radius:6px;max-height:340px;overflow:auto;z-index:110;box-shadow:0 8px 24px rgba(0,0,0,.55);}
+  #search-results.show{display:block;}
+  .search-item{padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--border);}
+  .search-item:last-child{border-bottom:none;}
+  .search-item:hover{background:#21262d;}
+  .search-item-title{font-weight:600;color:#fff;font-size:14px;}
+  .search-item-snippet{font-size:12.5px;color:var(--muted);margin-top:2px;word-break:break-all;}
+  .search-empty{padding:14px;color:var(--muted);font-size:13px;text-align:center;}
+  mark.search-hit{background:#d29922;color:#000;border-radius:2px;padding:0 2px;}
+
   section{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:22px 26px;margin-bottom:20px;scroll-margin-top:16px;}
   section h2{margin:0 0 4px;font-size:20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);padding-bottom:12px;color:#fff;}
   section h2 i{font-size:22px;}
@@ -62,7 +75,6 @@
   section h2 .badge.admin{background:#3b1d1d;color:#ff7b72;}
   section .desc{color:var(--muted);font-size:13px;margin:12px 0 16px;}
   section h3{font-size:16px;margin:20px 0 8px;font-weight:600;color:#fff;}
-  section h4{font-size:14.5px;margin:16px 0 6px;font-weight:600;color:#fff;}
 
   table.cmd{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0 10px;}
   table.cmd th,table.cmd td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top;}
@@ -103,78 +115,11 @@
     nav.toc{position:static;max-height:none;}
     header .meta{margin:0;text-align:left;}
   }
-
-  /* ============================================================
-     ===== 非线性动画层（仅保留 5 项） =====
-     ============================================================ */
-
-  /* 0. 页面加载前隐藏待动画元素，避免闪现 */
-  body.preload h1.title,
-  body.preload nav.toc,
-  body.preload section{opacity:0;}
-
-  /* ---- 动画 #2：主标题字符逐个弹跳（每字错开 45ms + 弹性过冲） ---- */
-  h1.title .ch{
-    display:inline-block;
-    animation:chIn .6s var(--ease-out-back) both;
-  }
-  @keyframes chIn{
-    from{opacity:0;transform:translateY(18px) rotate(6deg) scale(.6);}
-    to{opacity:1;transform:translateY(0) rotate(0) scale(1);}
-  }
-
-  /* ---- 动画 #3：侧边栏滑入（快出缓停） ---- */
-  nav.toc{
-    animation:tocIn .7s var(--ease-out-expo) .15s both;
-  }
-  @keyframes tocIn{
-    from{opacity:0;transform:translateX(-28px);}
-    to{opacity:1;transform:translateX(0);}
-  }
-
-  /* ---- 动画 #6：章节卡片滚动 3D 翻入（rotateX 7°→0） ---- */
-  section.rv{
-    animation:secIn .75s var(--ease-out-expo) both;
-  }
-  @keyframes secIn{
-    from{
-      opacity:0;
-      transform:translateY(36px) rotateX(7deg) scale(.97);
-    }
-    to{
-      opacity:1;
-      transform:translateY(0) rotateX(0) scale(1);
-    }
-  }
-
-  /* ---- 动画 #8：表格行波浪式淡入（横向滑入，JS 设置 --d 交错延迟） ---- */
-  tr.row-rv{
-    animation:rowIn .5s var(--ease-out-expo) both;
-    animation-delay:var(--d,0s);
-  }
-  @keyframes rowIn{
-    from{opacity:0;transform:translateX(-14px);}
-    to{opacity:1;transform:translateX(0);}
-  }
-
-  /* 尊重系统减弱动效设置 */
-  @media (prefers-reduced-motion:reduce){
-    h1.title .ch,
-    nav.toc,
-    section.rv,
-    tr.row-rv{
-      animation-duration:.01ms!important;
-      animation-delay:0s!important;
-    }
-    body.preload h1.title,
-    body.preload nav.toc,
-    body.preload section{opacity:1;}
-  }
 </style>
 </head>
-<body class="preload">
+<body>
 
-<header id="page-header">
+<header>
   <div class="wrap">
     <div>
       <div class="logo"><i class="bi bi-box-seam-fill"></i> Wtcraft Wiki</div>
@@ -182,7 +127,7 @@
     </div>
     <div class="meta">
       维护：WTC 管理组<br>
-      文档版本：v1.7 · 2026-09-13
+      文档版本：v1.9 · 2026-10-09
     </div>
   </div>
 </header>
@@ -224,6 +169,7 @@
     <div class="grp">趣味与功能</div>
     <ul>
       <li><a href="#farmers-delight"><i class="bi bi-egg-fried"></i> 农夫乐事</a></li>
+      <li><a href="#mechanism"><i class="bi bi-gear-wide-connected"></i> 类机械动力</a></li>
       <li><a href="#brewery"><i class="bi bi-cup-straw"></i> Brewery 酿酒</a></li>
       <li><a href="#gsit"><i class="bi bi-person-bounding-box"></i> GSit 坐姿</a></li>
       <li><a href="#gmusic"><i class="bi bi-music-note-beamed"></i> GMusic 音乐</a></li>
@@ -239,8 +185,17 @@
   <!-- 主内容 -->
   <main>
     <div class="breadcrumb"><i class="bi bi-house"></i> 首页 <span>/</span> 玩家教程 <span>/</span> 插件使用</div>
-    <h1 class="title" id="page-title">Wtcraft 服务器玩家使用文档</h1>
+    <h1 class="title">Wtcraft 服务器玩家使用文档</h1>
     <p class="lead">本页包含服务器规则、插件使用教程等内容，按模块分类整理。如仍有疑问，可在玩家群内询问，我们会持续完善本教程。</p>
+
+    <!-- 搜索框 -->
+    <div class="search-box">
+      <div class="search-inner">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" id="search-input" placeholder="搜索教程内容，如：密码、领地、商店、酿酒、机械动力…" autocomplete="off">
+        <div id="search-results"></div>
+      </div>
+    </div>
 
     <!-- ============ 服规 ============ -->
     <section id="rules">
@@ -723,9 +678,88 @@
       <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>配方不会全部直接公开，多尝试食材组合是本玩法的乐趣之一；也可以在玩家群内向其他「厨师」请教。</div></div>
 
       <h3>TIPS</h3>
-      <p>如果你是WTC服务器管理员请前往 Paper's Delight 官方文档查阅如何使用此插件，玩家无需查阅：</p>
+      <p>如果你是 WTC 服务器管理员，请前往 Paper's Delight 官方文档查阅如何使用此插件，玩家无需查阅：</p>
       <p>
-        <a class="external-link" href="https://takodoc.gitbook.io/papers-delight" target="_blank"><i class="bi bi-box-arrow-up-right"></i> Paper's Delight 官方文档(管理员)</a>
+        <a class="external-link" href="https://takodoc.gitbook.io/papers-delight" target="_blank"><i class="bi bi-box-arrow-up-right"></i> Paper's Delight 官方文档（管理员）</a>
+      </p>
+    </section>
+
+    <!-- ============ 类机械动力 ============ -->
+    <section id="mechanism">
+      <h2><i class="bi bi-gear-wide-connected"></i> 类机械动力 Create<span class="badge">玩法</span></h2>
+      <p class="desc">服务器通过插件实现了类《机械动力》(Create) 的动能旋转玩法：搭建动力网络，驱动研磨、压制、钻探等机器，以及旋转门、机械矿车等结构。纯服务端实现，无需安装任何模组或资源包，原版客户端直接进服即可游玩。</p>
+
+      <h3>玩法概览</h3>
+      <p>动能旋转从<strong>动力源</strong>出发，经过<strong>传动元件</strong>（轴、齿轮）传递，最终驱动消耗动力的<strong>机器</strong>。每个动力源产出固定的动力值；只有网络供给的动力达到需求，机器才会运转，部分机器在动力盈余时工作得更快。</p>
+      <ol class="steps">
+        <li><strong>搭建动力源：</strong>放置风车、水车或引擎等动力源，让它先转起来。</li>
+        <li><strong>连接传动网络：</strong>用轴沿直线传递旋转，用齿轮转向与分支，用离合器 / 换向器控制通断与方向。</li>
+        <li><strong>接入机器：</strong>在传动链末端接入磨石、钻头等机器，动力足够即开始工作。</li>
+        <li><strong>扩展与调控：</strong>动力不足时增加动力源或更换更高功率的源；用红石信号与离合器按需开关整条线路。</li>
+      </ol>
+
+      <h3>动力源</h3>
+      <table class="cmd">
+        <thead><tr><th width="22%">动力源</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">风车</td><td>始终旋转的基础动力源，功率较低。大型 / 巨型风车可产出更多动力（需配合对应旗帜合成）</td></tr>
+          <tr><td class="cmd">水车</td><td>挂墙放置，紧邻水源即可旋转</td></tr>
+          <tr><td class="cmd">引擎</td><td>燃烧燃料（煤、原木、木板、烈焰棒、熔岩）产出高功率；右键可补充燃料</td></tr>
+          <tr><td class="cmd">红石马达</td><td>由红石信号开关，稳定动力、无需燃料，但功率较低且造价较高</td></tr>
+        </tbody>
+      </table>
+
+      <h3>传动元件</h3>
+      <table class="cmd">
+        <thead><tr><th width="22%">元件</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">轴</td><td>沿自身轴向传递旋转</td></tr>
+          <tr><td class="cmd">齿轮</td><td>与垂直或同轴齿轮啮合，用于转向与分支动力</td></tr>
+          <tr><td class="cmd">离合器</td><td>收到红石信号时断开传动线路</td></tr>
+          <tr><td class="cmd">换向器</td><td>收到红石信号时反转旋转方向，主要配合旋转器使用</td></tr>
+        </tbody>
+      </table>
+
+      <h3>功能机器</h3>
+      <table class="cmd">
+        <thead><tr><th width="22%">机器</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">磨石</td><td>研磨物品（如圆石 → 沙砾 → 沙子，骨头 → 骨粉）</td></tr>
+          <tr><td class="cmd">提取压力机</td><td>将物品压榨成汁液与油（消耗玻璃瓶盛装）</td></tr>
+          <tr><td class="cmd">风扇</td><td>推动前方的实体与物品，作用距离随动力盈余提升</td></tr>
+          <tr><td class="cmd">钻头</td><td>自动挖掘正前方的方块</td></tr>
+          <tr><td class="cmd">放置器</td><td>从所连接的容器中取出方块并放置</td></tr>
+          <tr><td class="cmd">红石发电机</td><td>反向设备：读取网络动力并输出 0-15 模拟红石信号（用比较器读取任意侧面）；右键可设置上报内容（总动力 / 已用 / 剩余）与换算方式；自身不耗动力，且可像轴一样沿轴向传递旋转</td></tr>
+        </tbody>
+      </table>
+
+      <h3>结构与载具</h3>
+      <table class="cmd">
+        <thead><tr><th width="22%">内容</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">旋转器</td><td>用胶水刷把任意方块结构绑定到旋转器上，即可制作由动力网络驱动的旋转门、吊桥等</td></tr>
+          <tr><td class="cmd">机械矿车</td><td>可携带被胶合的方块结构沿铁轨行驶（目前以装饰为主，更多功能开发中）</td></tr>
+          <tr><td class="cmd">胶水刷</td><td>将多个方块绑定为一个可移动结构的创作工具</td></tr>
+        </tbody>
+      </table>
+
+      <h3>上手步骤（以磨石为例）</h3>
+      <ol class="steps">
+        <li><strong>合成配件：</strong>前往下方「配件制作教程」查阅各元件与机器的合成配方。</li>
+        <li><strong>放置动力源：</strong>例如在墙边放一台水车并使其紧邻水源，确认它开始旋转。</li>
+        <li><strong>铺设传动：</strong>用轴把旋转从水车引到目标位置，转弯或分支处放置齿轮。</li>
+        <li><strong>接入机器：</strong>在传动末端放置磨石，向其投入待研磨物品，动力足够即可开始工作。</li>
+        <li><strong>按需调控：</strong>在传动链中加入离合器，用红石信号随时停机 / 启动；动力不足时追加动力源。</li>
+      </ol>
+
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>齿轮可拐角与分支，善用离合器可以做到「一条动力链按区段启停」，避免动力浪费。</div></div>
+
+      <h3>配件合成与机器展示</h3>
+      <p>所有配件的合成配方与成品机器示例请查阅官方文档：</p>
+      <p>
+        <a class="external-link" href="https://def9a2a4.github.io/defCoreLib-docs/index.html?ns=mech" target="_blank"><i class="bi bi-hammer"></i> 配件制作教程（合成配方）</a>
+        &nbsp;
+        <a class="external-link" href="https://def9a2a4.github.io/defCoreLib-docs/showcases.html" target="_blank"><i class="bi bi-diagram-3"></i> 示例机器展示</a>
       </p>
     </section>
 
@@ -873,6 +907,15 @@
 
       <h3>Q19：农夫乐事的配方在哪里查？</h3>
       <p>A：游戏内部分配方需自行尝试，具体以服务器实装为准。可以向管理员求助，管理员可见合成配方。</p>
+
+      <h3>Q20：玩类机械动力需要装模组吗？</h3>
+      <p>A：不需要。类机械动力由服务端插件实现，纯服务端运行，无需安装任何模组或资源包，原版客户端直接进服即可游玩。</p>
+
+      <h3>Q21：动力网络搭好了，机器却不转 / 不工作？</h3>
+      <p>A：依次检查：① 动力源是否正常运转（水车需紧邻水源、引擎需补充燃料）；② 传动链是否用轴 / 齿轮正确连接到机器；③ 网络总动力是否达到机器需求，不足时追加动力源或更换更高功率的动力源。</p>
+
+      <h3>Q22：类机械动力的配件合成配方在哪里查？</h3>
+      <p>A：请前往 <a href="https://def9a2a4.github.io/defCoreLib-docs/index.html?ns=mech" target="_blank">配件制作教程（合成配方）</a> 查阅；想先看看成品机器长什么样，可以浏览 <a href="https://def9a2a4.github.io/defCoreLib-docs/showcases.html" target="_blank">示例机器展示</a>。</p>
     </section>
 
   </main>
@@ -880,94 +923,125 @@
 
 <footer>
   © 2026 Wtcraft 服务器 · WTC 管理组 维护<br>
-  本页最后更新：2026 年 9 月 13 日 · 如有疑问请在群内询问，我们会持续完善本教程。
+  本页最后更新：2026 年 10 月 9 日 · 如有疑问请在群内询问，我们会持续完善本教程。
 </footer>
 
 <script>
-/* ============================================================
-   ===== 非线性动画脚本层（仅保留 5 项） =====
-   ============================================================ */
-(function(){
-  'use strict';
+  // ============ 搜索功能 ============
+  const searchInput = document.getElementById('search-input');
+  const searchResults = document.getElementById('search-results');
+  const searchBox = document.querySelector('.search-box');
 
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ---------- 释放 preload，触发入场动画 ---------- */
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    document.body.classList.remove('preload');
+  // 构建搜索索引：每个 section 记录标题与全文
+  const searchIndex = [...document.querySelectorAll('main section')].map(sec => ({
+    id: sec.id,
+    title: (sec.querySelector('h2')?.textContent || sec.id).replace(/\s+/g, ' ').trim(),
+    text: sec.textContent.replace(/\s+/g, ' ').toLowerCase()
   }));
 
-  /* ---- 动画 #2：主标题字符逐个弹跳（每字错开 45ms + 弹性过冲） ---- */
-  const title = document.getElementById('page-title');
-  if(title && !reduced){
-    const text = title.textContent;
-    title.textContent = '';
-    const frag = document.createDocumentFragment();
-    [...text].forEach((ch,i)=>{
-      const s = document.createElement('span');
-      s.className = 'ch';
-      s.textContent = ch;
-      s.style.animationDelay = (0.1 + i*0.045) + 's';
-      frag.appendChild(s);
-    });
-    title.appendChild(frag);
+  function escapeHtml(str){
+    return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
 
-  /* ---- 动画 #6 + #8：章节卡片 3D 翻入 & 表格行波浪式淡入 ---- */
-  const sections = document.querySelectorAll('section');
+  // 清除旧的高亮
+  function clearMarks(){
+    document.querySelectorAll('mark.search-hit').forEach(m => {
+      const parent = m.parentNode;
+      parent.replaceChild(document.createTextNode(m.textContent), m);
+      parent.normalize();
+    });
+  }
 
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        /* #6：章节卡片 3D 翻入（rotateX 7°→0，快出缓停） */
-        e.target.classList.add('rv');
-        /* #8：章节内表格行波浪式淡入（交错延迟） */
-        e.target.querySelectorAll('table tbody tr').forEach((tr,i)=>{
-          tr.classList.add('row-rv');
-          tr.style.setProperty('--d', Math.min(i*0.05, 0.5) + 's');
-        });
-        io.unobserve(e.target);
+  // 在目标 section 内高亮所有匹配文字
+  function markIn(section, query){
+    clearMarks();
+    if(!section || !query) return;
+    const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT, {
+      acceptNode: n => {
+        if(n.parentElement.closest('script,style,mark')) return NodeFilter.FILTER_REJECT;
+        return n.nodeValue.toLowerCase().includes(query) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
       }
     });
-  }, {threshold:0.08, rootMargin:'0px 0px -6% 0px'});
-  sections.forEach(s=>io.observe(s));
+    const nodes = [];
+    let node;
+    while((node = walker.nextNode())) nodes.push(node);
+    nodes.forEach(n => {
+      const text = n.nodeValue, lower = text.toLowerCase();
+      const frag = document.createDocumentFragment();
+      let i = 0;
+      while(true){
+        const idx = lower.indexOf(query, i);
+        if(idx === -1){ frag.appendChild(document.createTextNode(text.slice(i))); break; }
+        frag.appendChild(document.createTextNode(text.slice(i, idx)));
+        const mark = document.createElement('mark');
+        mark.className = 'search-hit';
+        mark.textContent = text.substr(idx, query.length);
+        frag.appendChild(mark);
+        i = idx + query.length;
+      }
+      n.parentNode.replaceChild(frag, n);
+    });
+  }
 
-  /* ---- 动画 #10：页头视差（translateY ∝ √scrollY，前快后慢） ---- */
-  const header = document.getElementById('page-header');
-  let ticking = false;
-  function onScroll(){
-    if(ticking) return;
-    ticking = true;
-    requestAnimationFrame(()=>{
-      const y = window.scrollY;
-      if(header && !reduced){
-        if(y < 260){
-          header.style.transform = `translateY(${Math.sqrt(y)*0.9}px)`;
-          header.style.opacity = String(Math.max(0.25, 1 - y/280));
-        }else{
-          header.style.transform = '';
-          header.style.opacity = '';
+  // 渲染搜索结果下拉
+  function renderResults(raw){
+    const query = raw.trim().toLowerCase();
+    searchResults.innerHTML = '';
+    if(!query){ searchResults.classList.remove('show'); return; }
+    const hits = searchIndex.filter(s => s.text.includes(query) || s.title.toLowerCase().includes(query));
+    if(!hits.length){
+      searchResults.innerHTML = '<div class="search-empty">未找到与「' + escapeHtml(raw.trim()) + '」相关的内容</div>';
+      searchResults.classList.add('show');
+      return;
+    }
+    hits.slice(0, 12).forEach(s => {
+      const item = document.createElement('div');
+      item.className = 'search-item';
+      let snippet = '';
+      const pos = s.text.indexOf(query);
+      if(pos > -1){
+        const start = Math.max(0, pos - 30);
+        snippet = (start > 0 ? '…' : '') + s.text.substring(start, pos + query.length + 60) + (pos + query.length + 60 < s.text.length ? '…' : '');
+      } else {
+        snippet = s.text.substring(0, 90) + '…';
+      }
+      item.innerHTML = '<div class="search-item-title">' + escapeHtml(s.title) + '</div>'
+                     + '<div class="search-item-snippet">' + escapeHtml(snippet) + '</div>';
+      item.addEventListener('click', () => {
+        const target = document.getElementById(s.id);
+        if(target){
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          markIn(target, query);
         }
-      }
-      updateToc();
-      ticking = false;
+        searchResults.classList.remove('show');
+      });
+      searchResults.appendChild(item);
     });
+    searchResults.classList.add('show');
   }
 
-  /* ---------- 目录跟随滚动高亮（原有功能，非动画） ---------- */
+  searchInput.addEventListener('input', () => renderResults(searchInput.value));
+  searchInput.addEventListener('keydown', e => {
+    if(e.key === 'Enter'){
+      const first = searchResults.querySelector('.search-item');
+      if(first) first.click();
+    }
+    if(e.key === 'Escape'){ searchResults.classList.remove('show'); searchInput.blur(); }
+  });
+  document.addEventListener('click', e => {
+    if(!searchBox.contains(e.target)) searchResults.classList.remove('show');
+  });
+
+  // ============ 目录跟随滚动高亮 ============
   const links = document.querySelectorAll('nav.toc a');
-  const tocSections = [...links].map(a => document.querySelector(a.getAttribute('href')));
-  function updateToc(){
-    let cur = tocSections[0];
-    for(const s of tocSections){
+  const sections = [...links].map(a => document.querySelector(a.getAttribute('href')));
+  window.addEventListener('scroll', () => {
+    let cur = sections[0];
+    for(const s of sections){
       if(s && s.getBoundingClientRect().top <= 120) cur = s;
     }
     links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + (cur?.id||'')));
-  }
-
-  window.addEventListener('scroll', onScroll, {passive:true});
-  updateToc();
-})();
+  }, {passive:true});
 </script>
 
 </body>
