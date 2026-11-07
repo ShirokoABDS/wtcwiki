@@ -127,7 +127,7 @@
     </div>
     <div class="meta">
       维护：WTC 管理组<br>
-      文档版本：v1.9 · 2026-10-09
+      文档版本：v2.0 · 2026-11-07
     </div>
   </div>
 </header>
@@ -169,6 +169,7 @@
     <div class="grp">趣味与功能</div>
     <ul>
       <li><a href="#farmers-delight"><i class="bi bi-egg-fried"></i> 农夫乐事</a></li>
+      <li><a href="#kaleidoscope-cookery"><i class="bi bi-cup-hot"></i> 森罗物语</a></li>
       <li><a href="#mechanism"><i class="bi bi-gear-wide-connected"></i> 类机械动力</a></li>
       <li><a href="#brewery"><i class="bi bi-cup-straw"></i> Brewery 酿酒</a></li>
       <li><a href="#gsit"><i class="bi bi-person-bounding-box"></i> GSit 坐姿</a></li>
@@ -684,6 +685,82 @@
       </p>
     </section>
 
+    <!-- ============ 森罗物语 ============ -->
+    <section id="kaleidoscope-cookery">
+      <h2><i class="bi bi-cup-hot"></i> 森罗物语 Kaleidoscope Cookery <span class="badge">玩法</span></h2>
+      <p class="desc">服务器通过 CraftEngine（CE）实装了《森罗物语》的中式烹饪玩法，从切菜、炒菜、炖汤、蒸制到摆盘上桌一应俱全。无需安装任何模组，原版客户端 + 服务器资源包即可体验完整的中式厨房。</p>
+
+      <h3>玩法概览</h3>
+      <p>森罗物语围绕「备料 → 切配 → 控火烹饪 → 摆盘上桌 → 泡茶奉客」的中式后厨闭环展开，整体流程：</p>
+      <ol class="steps">
+        <li><strong>准备食材：</strong>种植番茄、生菜、辣椒、水稻等新作物，获取生熟肉链、面团面条等原料，部分油脂需通过搪瓷盆提炼。</li>
+        <li><strong>切配加工：</strong>手持菜刀在砧板上逐刀切割食材，石磨可由玩家推磨或生物拉磨研磨原料，切配完成的食材是许多高级料理的必要前置。</li>
+        <li><strong>控火烹饪：</strong>将食材投入炒锅、高汤锅、蒸笼或沙威玛烤架，根据菜谱完成翻炒 / 炖煮 / 蒸制 / 炭烤等工序。</li>
+        <li><strong>摆盘上桌：</strong>做好的招牌菜与拼盘可以直接摆放在餐桌上，多人共同分食，每道菜通常有固定口数。</li>
+        <li><strong>泡茶奉客：</strong>使用茶壶注水投料熬煮茶饮，倒入茶杯垫上的空杯即可享用，放料越多出茶份数越多。</li>
+      </ol>
+
+      <h3>烹饪台 / 厨具一览</h3>
+      <p>各厨具均有独立交互与配方系统，搭配炉灶控火使用：</p>
+      <table class="cmd">
+        <thead><tr><th width="24%">厨具</th><th>玩法</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">炒锅</td><td>核心厨具。倒油 → 投料 → 翻炒 → 盛出，烹饪过的食谱会被记录在菜谱板中</td></tr>
+          <tr><td class="cmd">高汤锅</td><td>加汤底 → 投料 → 盖盖炖煮 → 盛出，适合汤品与炖菜</td></tr>
+          <tr><td class="cmd">蒸笼</td><td>放料蒸制，可多层叠放提高产能；注意失去支撑会整体掉落</td></tr>
+          <tr><td class="cmd">石磨</td><td>由玩家推磨或生物拉磨驱动，用于研磨食材（如研磨五谷、香料）</td></tr>
+          <tr><td class="cmd">砧板</td><td>手持菜刀逐刀切割食材，切满次数后按权重产出成品</td></tr>
+          <tr><td class="cmd">沙威玛烤架</td><td>红石信号控制旋转，炭火慢烤肉类，烤好的肉逐层削下</td></tr>
+          <tr><td class="cmd">搪瓷盆</td><td>储油容器，用于加油 / 取油，以及让厨铲沾油</td></tr>
+          <tr><td class="cmd">炉灶</td><td>热源与控火台。使用打火石点火，用铲子右键或等降雨自动熄火</td></tr>
+          <tr><td class="cmd">厨具架</td><td>收纳菜刀、锅铲、汤勺等厨具的展示与存放架</td></tr>
+          <tr><td class="cmd">菜谱板</td><td>查看与记录已解锁的食谱，方便后厨团队查阅</td></tr>
+          <tr><td class="cmd">茶壶</td><td>注水、投料、熬煮茶饮，倒入茶杯垫上的空杯饮用</td></tr>
+        </tbody>
+      </table>
+
+      <h3>炉灶使用要点</h3>
+      <table class="cmd">
+        <thead><tr><th width="34%">操作</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">点火</td><td>手持打火石右键炉灶即可点燃</td></tr>
+          <tr><td class="cmd">熄火</td><td>手持铲子右键炉灶手动熄火；下雨时炉灶会自动熄灭，露天厨房请注意遮挡</td></tr>
+        </tbody>
+      </table>
+
+      <h3>新作物与原料</h3>
+      <table class="cmd">
+        <thead><tr><th width="30%">内容</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">番茄 / 生菜 / 辣椒</td><td>常规新作物，种植在耕地上即可，是中式料理的基础蔬菜</td></tr>
+          <tr><td class="cmd">水稻</td><td>需种植在水田环境，收获稻米可用于研磨、煮饭、制作米线等</td></tr>
+          <tr><td class="cmd">食材与成品</td><td>内置 100+ 食材与成品，覆盖生熟肉链、面团面条、盖饭、汤品、面食、招牌摆盘菜与拼盘，全部带营养与食用效果</td></tr>
+        </tbody>
+      </table>
+
+      <h3>餐厅家具</h3>
+      <p>配套装饰与功能性家具，可打造一整套中式餐厅：</p>
+      <table class="cmd">
+        <thead><tr><th width="24%">家具</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="cmd">餐桌 / 椅子</td><td>组合摆放，可放置做好的菜品供多人分食</td></tr>
+          <tr><td class="cmd">厨娘凳</td><td>11 种木材的坐凳家具，装饰用</td></tr>
+          <tr><td class="cmd">垃圾桶</td><td>处理厨余与边角料，避免乱丢物品</td></tr>
+          <tr><td class="cmd">菜谱 / 食谱</td><td>记录菜品配方，可在后厨内摆放与查阅</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note tip"><i class="bi bi-info-circle"></i><div><strong>提示：</strong>约 250 条配方不会全部直接公开，部分菜谱需要玩家自行尝试食材组合才能解锁；已解锁的食谱会记录在菜谱板上，可在玩家群内向其他「大厨」请教。</div></div>
+      <div class="note warn"><i class="bi bi-exclamation-triangle"></i><div><strong>注意：</strong>蒸笼为叠层结构，抽走下层方块会让整叠蒸笼掉落；露天炉灶下雨天会自动熄火，建议将厨房建在室内或圈好领地的屋檐下。领地内厨具与家具的交互遵循领地权限，离开领地前请关闭他人交互权限，避免灶台被人随意点火熄火。</div></div>
+      <div class="note tip"><i class="bi bi-shield-check"></i><div><strong>小提示：</strong>森罗物语与农夫乐事为两套相互独立的烹饪玩法，本服同时实装，配方与食材互不通用，可分别体验。</div></div>
+
+      <h3>插件原地址</h3>
+      <p>更多玩法细节与更新日志请前往插件仓库查阅：</p>
+      <p>
+        <a class="external-link" href="https://github.com/Nicoppara/KaleidoscopeCookery_Plugin" target="_blank"><i class="bi bi-box-arrow-up-right"></i> GitHub · KaleidoscopeCookery_Plugin</a>
+      </p>
+    </section>
+
     <!-- ============ 类机械动力 ============ -->
     <section id="mechanism">
       <h2><i class="bi bi-gear-wide-connected"></i> 类机械动力 Create<span class="badge">玩法</span></h2>
@@ -916,6 +993,21 @@
 
       <h3>Q22：类机械动力的配件合成配方在哪里查？</h3>
       <p>A：请前往 <a href="https://def9a2a4.github.io/defCoreLib-docs/index.html?ns=mech" target="_blank">配件制作教程（合成配方）</a> 查阅；想先看看成品机器长什么样，可以浏览 <a href="https://def9a2a4.github.io/defCoreLib-docs/showcases.html" target="_blank">示例机器展示</a>。</p>
+
+      <h3>Q23：玩森罗物语需要装模组吗？</h3>
+      <p>A：不需要。森罗物语由服务端 CraftEngine（CE）插件实现，原版客户端 + 服务器资源包直接进服即可体验，无需额外安装模组。</p>
+
+      <h3>Q24：森罗物语和农夫乐事有什么区别？</h3>
+      <p>A：两者是两套独立的烹饪玩法插件，本服同时实装。森罗物语以中式炒、炖、蒸、烤、泡茶为主，农夫乐事以砧板 + 烹饪锅 + 煎锅的西式 farm-to-table 玩法为主，配方与食材互不通用。</p>
+
+      <h3>Q25：炒锅做不出菜 / 炉灶点不着火怎么办？</h3>
+      <p>A：依次检查：① 炉灶是否已被打火石点燃（雨天露天会自动熄灭）；② 炒锅里是否加了油（需先用搪瓷盆取油、厨铲沾油）；③ 投放的食材组合是否为有效配方，可参考菜谱板上已解锁的食谱；④ 是否使用了对应厨具（如菜刀、锅铲）。</p>
+
+      <h3>Q26：蒸笼放好后塌了？</h3>
+      <p>A：蒸笼为叠层结构，下层失去支撑会整体掉落。请将蒸笼放置在炉灶等稳固方块上方，收纳时注意不要拆掉底部方块。</p>
+
+      <h3>Q27：森罗物语的厨具被人乱动怎么办？</h3>
+      <p>A：森罗物语的厨具与家具交互会遵循服务器领地权限。请把整套厨房搭建在自己已圈好的领地内，并在领地设置中关闭他人的交互 / 使用权限。</p>
     </section>
 
   </main>
@@ -923,7 +1015,7 @@
 
 <footer>
   © 2026 Wtcraft 服务器 · WTC 管理组 维护<br>
-  本页最后更新：2026 年 10 月 9 日 · 如有疑问请在群内询问，我们会持续完善本教程。
+  本页最后更新：2026 年 11 月 7 日 · 如有疑问请在群内询问，我们会持续完善本教程。
 </footer>
 
 <script>
